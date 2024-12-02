@@ -1,0 +1,15 @@
+
+
+
+<div class="container">
+  <h1>Email Confirmation</h1>
+  <p>Hello {{ name }}, welcome to edumath224</p>
+  <p>
+      Please confirm your email address by clicking on the link below:
+  </p>
+  <p>
+      <a href="http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}">
+          Activate your account
+      </a>
+  </p>
+</div>
