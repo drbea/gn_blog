@@ -142,9 +142,10 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # The directory where django will collect static files for deployment
 MEDIA_URL = '/media/'  # The URL prefix for where media files will be served from
-MEDIA_ROOT = BASE_DIR / 'static/media'  # The directory where media files will be stored
+MEDIA_ROOT = BASE_DIR / 'static/img'  # The directory where media files will be stored
 
 AUTH_USER_MODEL = 'accounts.User'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
