@@ -9,6 +9,9 @@ class User(AbstractUser):
 
     bio = models.TextField(null=True, blank = True, default = "Je suis Mr/Mme ...")
 
+    def __str__(self):
+        return self.username
+
 
 class Followers(models.Model):
     followers = models.ForeignKey(User, related_name = "Following", on_delete = models.CASCADE)

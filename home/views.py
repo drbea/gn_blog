@@ -1,6 +1,29 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from . models import Categorie, Publication, Commentaire, Reaction, Sujet
+
+from message.models import Message
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+
+User = get_user_model()
+
 # Create your views here.
+
+def list_messages(request):
+    # Récupérer tous les utilisateurs avec lesquels l'utilisateur a des conversations
+    users_with_conversations = User.objects.filter(
+        Q(sent_messages__receiver=request.user) | Q(received_messages__sender=request.user)
+    ).distinct()
+
+    conversations = []
+    for user in users_with_conversations:
+        last_message = Message.get_last_message_with_user(request.user, user)
+        if last_message:
+            conversations.append({
+                'user': user,
+                'last_message': last_message,
+            })
+    return conversations
 
 ## Gestion des publoications
 def index(request):
@@ -10,6 +33,7 @@ def index(request):
     context = {
         "publications": publication,
         "categories": categorie,
+        "conversations": list_messages(request),
     }
     return render(request, "home/index.html", context)
 
@@ -22,6 +46,8 @@ def detail_publication(request, id_publication):
         "post": publication,
         "commentaires": commentaires,
         "comments": commentaires,
+        "conversations": list_messages(request),
+
     }
     return render(request, "home/post_detail.html", context)
 
@@ -49,7 +75,9 @@ def create_publication(request):
 
     context = {
         "sujets": Sujet.objects.all(),
-        "categories": Categorie.objects.all()
+        "categories": Categorie.objects.all(),
+        "conversations": list_messages(request),
+
     }
     return render(request, 'home/post_create.html', context)
 
@@ -73,9 +101,9 @@ def update_publication(request, id_publication):
     commentaires = publication.commentaire_set.all()
     context = {
         "publication": publication,
-
-            "sujets": Sujet.objects.all(),
-            "categories": Categorie.objects.all()
+        "conversations": list_messages(request),
+        "sujets": Sujet.objects.all(),
+        "categories": Categorie.objects.all()
         }
     return render(request, 'home/post_update.html', context)
 
@@ -88,6 +116,8 @@ def delete_publication(request, id_publication):
 
     context = {
         "publication": publication,
+        "conversations": list_messages(request),
+
         }
     return render(request, 'home/post_delete.html', context)
 
@@ -104,7 +134,9 @@ def create_comment(request, id_publication):
         new_commentaire.save()
         return redirect("home:detail_publication", publication.id)
     context = {
-    "publication": publication
+    "publication": publication,
+    "conversations": list_messages(request),
+
     }
     return render(request, "home/post_detail.html", context)
 
@@ -114,6 +146,7 @@ def detail_comment(request, id_commentaire):
     context = {
         "commentaires": commentaire,
         "comments": commentaire,
+        "conversations": list_messages(request),
     }
     return render(request, "home/post_detail.html", context)
 
