@@ -1,0 +1,10 @@
+
+
+<form method="post" action="{% url 'home:create_comment' publication.id %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="commentaire">Ajouter un commentaire</label>
+        <textarea class="form-control" id="commentaire" name="commentaire" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Poster le commentaire</button>
+</form>

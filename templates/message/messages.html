@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h2>Conversations</h2>
+
+<div class="conversation">
+    {% for message in all_messages %}
+        {% if message.sender == request.user %}
+            <div class="message sent">
+                <strong>Vous à {{ message.receiver.username }}:</strong>
+                <p>{{ message.contenu }}</p>
+                <small>{{ message.timestamp }}</small>
+            </div>
+        {% else %}
+            <div class="message received">
+                <strong>{{ message.sender.username }}:</strong>
+                <p>{{ message.contenu }}</p>
+                <small>{{ message.timestamp }}</small>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<form method="post" action="{% url 'message:send_message' receiver.id %}" class="message-form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="content">Message</label>
+        <textarea class="form-control" id="content" name="contenu" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+</form>
+{% endblock %}
+{% block css %}
+
+<style>
+    .conversation {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-width: 600px;
+        margin: 0 auto;
+        height: 400px; /* Ajustez la hauteur selon vos besoins */
+        overflow-y: auto; /* Ajoute une barre de défilement si nécessaire */
+    }
+
+    .message {
+        padding: 10px;
+        border-radius: 5px;
+        max-width: 80%;
+    }
+
+    .received {
+        align-self: flex-start;
+        background-color: #e5e5ea;
+    }
+
+    .sent {
+        align-self: flex-end;
+        background-color: #dcf8c6;
+    }
+
+    .message strong {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .message p {
+        margin: 0;
+    }
+
+    .message small {
+        display: block;
+        text-align: right;
+        font-size: 0.8em;
+        color: #666;
+    }
+
+    .message-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-width: 600px;
+        margin: 20px auto;
+    }
+
+    .message-form .form-group {
+        margin-bottom: 10px;
+    }
+
+    .message-form .btn-primary {
+        align-self: flex-end;
+    }
+</style>
+{% endblock %}

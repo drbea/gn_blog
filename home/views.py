@@ -119,8 +119,6 @@ def detail_comment(request, id_commentaire):
 
 
 
-
-
 def delete_comment(request, id_commentaire):
     commentaire = get_object_or_404(Commentaire, id = id_commentaire)
     if request.method == "POST":

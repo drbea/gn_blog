@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Conversations</h2>
+
+<div class="conversation-list">
+    {% for conversation in conversations %}
+        <div class="conversation-item">
+            <a href="{% url 'message:message' conversation.user.id %}">
+                <strong>{{ conversation.user.username }}</strong>
+                <p>{{ conversation.last_message.contenu|truncatechars:50 }}</p>
+                <small>{{ conversation.last_message.timestamp|timesince }} ago</small>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

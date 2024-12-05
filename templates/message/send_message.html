@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Envoyer un message à {{ receiver.username }}</h2>
+<form method="post" action="{% url 'message:send_message' receiver.id %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="content">Message</label>
+        <textarea class="form-control" id="content" name="contenu" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+</form>
+{% endblock %}
