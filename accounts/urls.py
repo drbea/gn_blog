@@ -11,4 +11,7 @@ urlpatterns = [
     path("activate/<uidb64>/<token>/", views.activate, name="activate"),
 
     path("user_profile/<str:user_id>/", views.user_profile, name="user_profile"),
+    path('follow/<int:user_id>/', views.follow_user, name='follow_user'),
+    path('users/', views.user_list, name='user_list'),
+    # Autres URLs
 ]

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Supprimer publication {% endblock %}
+
+{% block css %}
+ <!-- <link href="{% static 'css/index.css' %}" rel="stylesheet"> -->
+{% endblock %}
+
+{% block content %}
+
+<div class="">
+  <p class="text-warning">Voulez vous vraiment Supprimer: {{publication.sujet}}</p>
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger" name="button">Supprimer</button>
+  </form>
+  <a href="" class="btn btn-warning">retourner</a>
+
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Creer publication {% endblock %}
+
+{% block css %}
+ <link href="{% static 'css/index.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Créer une Publication</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="sujet">Sujet</label>
+                <select class="form-control" id="sujet" name="sujet" required>
+                    <option value="" selected disabled>Choisissez un sujet</option>
+                    {% for sujet in sujets %}
+                        <option value="{{ sujet.id }}">{{ sujet.titre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="category">Catégorie</label>
+                <input type="text" class="form-control" id="category" name="category" list="category-list" required>
+                <datalist id="category-list">
+                    {% for categorie in categories %}
+                        <option value="{{ categorie.titre }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label for="contenu">Contenu</label>
+                <textarea class="form-control" id="contenu" name="contenu" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Publier</button>
+        </form>
+    </div>
+{% endblock %}

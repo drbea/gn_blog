@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.core.mail import EmailMessage, send_mail
 
 from django.contrib import messages
@@ -10,6 +10,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.template.loader import render_to_string
 
 from .tokens import account_activation_token
+from . models import Followers
 from config import settings
 
 
@@ -109,11 +110,40 @@ def login_page(request):
             messages.error(request, 'Invalid credentials please try again')
     return render(request, 'accounts/login_page.html')
 
-
+# Gestion des Followers
+# @login_required
 def user_profile(request, user_id):
-    user = User.objects.get(id=user_id)
+    user = get_object_or_404(User, id=user_id)
+    followers = Followers.objects.filter(followed=user)
+    following = Followers.objects.filter(followers=user)
 
     context = {
-        'user': user
+        "user": user,
+        "followers": followers,
+        "followings": following,
     }
     return render(request, 'accounts/user_profile.html', context)
+
+# @login_required
+def follow_user(request, user_id):
+    user_to_follow = get_object_or_404(User, id=user_id)
+    if request.user != user_to_follow:
+        follow, created = Followers.objects.get_or_create(followers=request.user, followed=user_to_follow)
+        if not created:
+            follow.delete()
+            print(f"Vous suivez ne plus  {user_to_follow.username}.")
+        else:
+            print(f"Vous suivez desormais  {user_to_follow.username}.")
+        return redirect('accounts:user_list')  # Redirige vers la liste des utilisateurs
+
+    return redirect('accounts:user_list')  # Redirige vers la liste des utilisateurs
+
+def user_list(request):
+    users = User.objects.all()
+    following_status = {}
+
+    if request.user.is_authenticated:
+        for user in users:
+            following_status[user.id] = Followers.objects.filter(followers=request.user, followed=user).exists()
+
+    return render(request, 'accounts/user_list.html', {'users': users, 'following_status': following_status})

@@ -5,4 +5,12 @@ from . import views
 app_name = "home"
 urlpatterns = [
     path("", views.index, name = "index"),
+    path("post/<int:id_publication>/detail/", views.detail_publication, name = "detail_publication"),
+    path("post/create/", views.create_publication, name = "create_publication"),
+    path("post/<int:id_publication>/update/", views.update_publication, name = "update_publication"),
+    path("post/<int:id_publication>/delete/", views.delete_publication, name = "delete_publication"),
+    path("post/<int:id_publication>/comment/", views.create_comment, name = "create_comment"),
+
+
+
 ]
