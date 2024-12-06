@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from . models import Categorie, Publication, Commentaire, Reaction, Sujet
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from message.models import Message
 from django.contrib.auth import get_user_model
 from django.db.models import Q
@@ -174,7 +175,7 @@ def add_or_remove_reaction(request, id_publication, reaction_type):
 
     # Vérifiez si l'utilisateur a déjà réagi à cette publication
     reaction, created = Reaction.objects.get_or_create(
-        utilisateur=user,
+        autheur=user,
         publication=publication,
         defaults={'type_reaction': reaction_type}
     )
@@ -195,7 +196,47 @@ def add_or_remove_reaction(request, id_publication, reaction_type):
 
     return redirect('home:detail_publication', id_publication=id_publication)
 
-    
+
 
 
 ####################333
+
+def react_to_publication(request, id_publication, reaction_type):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Vous devez être connecté pour réagir.')
+        return redirect('nom_de_votre_page')
+
+    publication = get_object_or_404(Publication, id=id_publication)
+
+    # Vérifier si l'utilisateur a déjà réagi à cette publication
+    existing_reaction = Reaction.objects.filter(
+        autheur=request.user,
+        publication=publication
+    ).first()
+
+    if existing_reaction:
+        if existing_reaction.type_reaction == reaction_type:
+            # Si la réaction est la même, on la supprime
+            existing_reaction.delete()
+            messages.info(request, 'Votre réaction a été supprimée.')
+        else:
+            # Sinon, mettre à jour avec le nouveau type de réaction
+            existing_reaction.type_reaction = reaction_type
+            existing_reaction.save()
+            messages.success(request, f'Votre réaction a été mise à jour en "{reaction_type}".')
+    else:
+        # Si aucune réaction n'existe, en créer une nouvelle
+        Reaction.objects.create(
+            autheur=request.user,
+            publication=publication,
+            type_reaction=reaction_type
+        )
+        messages.success(request, f'Vous avez réagi avec "{reaction_type}".')
+
+    return redirect('home:detail_publication', id_publication=publication.id)
+
+
+def dashboard(request):
+
+    context = {}
+    return render(request, "home/dashboard.html", context)

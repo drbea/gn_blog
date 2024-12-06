@@ -181,14 +181,14 @@
                                         d="M12 16c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.859 0-7 3.141-7 7s3.141 7 7 7zM12 4c2.757 0 5 2.243 5 5s-2.243 5-5 5-5-2.243-5-5c0-2.757 2.243-5 5-5z"
                                     ></path>
                                 </svg>
-                                {{ post.reaction_set.count }} r
+                                 {{ post.reactions.count }} reactions
                             </a>
 
 
 
 
                             <!-- Afficher les réactions -->
-                            <div>
+                            <!-- <div>
                                 <h3>Réactions</h3>
                                 <form class="inline" action="{% url 'home:add_reaction' post.id 'Like' %}" method="post">
                                     {% csrf_token %}
@@ -202,11 +202,24 @@
                                     {% csrf_token %}
                                     <button type="submit">J'adore</button>
                                 </form>
-                                <form class="inline" action="{% url 'home:add_reaction' post.id 'dislike' %}" method="post">
+                                <form class="inline"action="{% url 'home:add_reaction' post.id 'dislike' %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit">J'aime pas</button>
                                 </form>
-                            </div>
+                            </div> -->
+                            <form method="POST" action="{% url 'home:react_to_publication' post.id 'like' %}">
+                                {% csrf_token %}
+                                <button type="submit">
+                                    J'aime
+                                </button>
+                            </form>
+
+                            <form method="POST" action="{% url 'home:react_to_publication' post.id 'jadore' %}">
+                                {% csrf_token %}
+                                <button type="submit">
+                                    J'adore
+                                </button>
+                            </form>
 
 
                             <p class="roomListRoom__topic"> {{ post.category }}</p>

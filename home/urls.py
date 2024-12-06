@@ -5,6 +5,9 @@ from . import views
 app_name = "home"
 urlpatterns = [
     path("", views.index, name = "index"),
+    path("dashboard/", views.dashboard, name = "index"),
+    path('post/<int:id_publication>/react/<str:reaction_type>/', views.react_to_publication, name='react_to_publication'),
+
     path("post/<int:id_publication>/detail/", views.detail_publication, name = "detail_publication"),
     path("post/create/", views.create_publication, name = "create_publication"),
     path("post/<int:id_publication>/update/", views.update_publication, name = "update_publication"),

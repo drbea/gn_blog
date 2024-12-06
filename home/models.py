@@ -32,6 +32,11 @@ class Publication(models.Model):
     def __str__(self):
         return self.contenu[:50]  # retourne les 50 premiers caractères
 
+    def count_reactions(self):
+        """Retourne un dictionnaire avec le nombre total de chaque type de réaction."""
+        return self.reactions.values('type_reaction').annotate(count=models.Count('type_reaction'))
+
+
 class Commentaire(models.Model):
     autheur = models.ForeignKey(User, on_delete = models.CASCADE)
     publication = models.ForeignKey(Publication, on_delete = models.CASCADE)
@@ -45,12 +50,33 @@ class Commentaire(models.Model):
     def __str__(self):
         return self.contenu[:50]
 
+# class Reaction(models.Model):
+#     autheur = models.ForeignKey(User, on_delete=models.CASCADE)
+#     publication = models.ForeignKey(Publication, on_delete=models.CASCADE, blank=True, null=True)
+#     commentaire = models.ForeignKey(Commentaire, on_delete=models.CASCADE, blank=True, null=True)
+#     type_reaction = models.CharField(max_length=50, choices=[("like", "Like"), ("dislike", "J'aime pas"), ("jadore", "J'adore"),  ("cool", "Cool")])
+#     date_reaction = models.DateTimeField(auto_now=True)
+#
+#     def __str__(self):
+#         return f"{self.utilisateur} a réagi sur {self.publication or self.commentaire} avec {self.type_reaction}"
+#
+
 class Reaction(models.Model):
-    utilisateur = models.ForeignKey(User, on_delete=models.CASCADE)
-    publication = models.ForeignKey(Publication, on_delete=models.CASCADE, blank=True, null=True)
-    commentaire = models.ForeignKey(Commentaire, on_delete=models.CASCADE, blank=True, null=True)
-    type_reaction = models.CharField(max_length=50, choices=[("like", "Like"), ("dislike", "J'aime pas"), ("jadore", "J'adore"),  ("cool", "Cool")])
+    autheur = models.ForeignKey(User, on_delete=models.CASCADE)
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE, related_name='reactions')
+    type_reaction = models.CharField(
+        max_length=50,
+        choices=[
+            ("like", "like"),
+            ("jadore", "jadore"),
+            ("cool", "cool"),
+            ("dislike", "dislike"),
+        ]
+    )
     date_reaction = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('autheur', 'publication', 'type_reaction')  # Empêche plusieurs réactions du même type par utilisateur/publication
+
     def __str__(self):
-        return f"{self.utilisateur} a réagi sur {self.publication or self.commentaire} avec {self.type_reaction}"
+        return f"{self.autheur} a réagi sur {self.publication} avec {self.type_reaction}"
