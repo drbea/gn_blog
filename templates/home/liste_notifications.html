@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+</head>
+<body>
+    <h1>Vos Notifications</h1>
+
+    {% if notifications %}
+        <ul>
+            {% for notification in notifications %}
+                <li>
+                    {{ notification.message }}
+                    <small>({{ notification.date_creation }})</small>
+                    {% if not notification.lu %}
+                        <strong> - Nouveau</strong>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Vous n'avez aucune notification.</p>
+    {% endif %}
+</body>
+</html>

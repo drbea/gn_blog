@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from . models import Categorie, Publication, Commentaire, Reaction, Sujet
+from . models import Categorie, Publication, Commentaire, Reaction, Sujet, Notification
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from message.models import Message
@@ -25,6 +25,15 @@ def list_messages(request):
                 'last_message': last_message,
             })
     return conversations
+
+
+def liste_notifications(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    notifications = request.user.notifications.all()  # Notifications pour l'utilisateur connecté
+    return render(request, 'home/liste_notifications.html', {'notifications': notifications})
+
 
 ## Gestion des publoications
 def index(request):
@@ -133,6 +142,14 @@ def create_comment(request, id_publication):
             contenu = contenu_commentaire
         )
         new_commentaire.save()
+
+
+        # Ajouter une notification
+        Notification.objects.create(
+            utilisateur=publication.autheur,  # L'utilisateur qui recevra la notification
+            message=f"{request.user.username} a commente la publication {publication.sujet[:20]}."
+        )
+
         return redirect("home:detail_publication", publication.id)
     context = {
     "publication": publication,
@@ -168,33 +185,33 @@ def delete_comment(request, id_commentaire):
 
 
 
-@login_required
-def add_or_remove_reaction(request, id_publication, reaction_type):
-    publication = get_object_or_404(Publication, id=id_publication)
-    user = request.user
-
-    # Vérifiez si l'utilisateur a déjà réagi à cette publication
-    reaction, created = Reaction.objects.get_or_create(
-        autheur=user,
-        publication=publication,
-        defaults={'type_reaction': reaction_type}
-    )
-
-    if not created:
-        # Si l'utilisateur a déjà réagi, mettez à jour la réaction
-        if reaction.type_reaction == reaction_type:
-            # Si la réaction est déjà du même type, supprimez-la
-            reaction.delete()
-        else:
-            # Sinon, mettez à jour la réaction
-            reaction.type_reaction = reaction_type
-            reaction.save()
-    else:
-        # Si l'utilisateur n'a pas encore réagi, créez une nouvelle réaction
-        reaction.type_reaction = reaction_type
-        reaction.save()
-
-    return redirect('home:detail_publication', id_publication=id_publication)
+# @login_required
+# def add_or_remove_reaction(request, id_publication, reaction_type):
+#     publication = get_object_or_404(Publication, id=id_publication)
+#     user = request.user
+#
+#     # Vérifiez si l'utilisateur a déjà réagi à cette publication
+#     reaction, created = Reaction.objects.get_or_create(
+#         autheur=user,
+#         publication=publication,
+#         defaults={'type_reaction': reaction_type}
+#     )
+#
+#     if not created:
+#         # Si l'utilisateur a déjà réagi, mettez à jour la réaction
+#         if reaction.type_reaction == reaction_type:
+#             # Si la réaction est déjà du même type, supprimez-la
+#             reaction.delete()
+#         else:
+#             # Sinon, mettez à jour la réaction
+#             reaction.type_reaction = reaction_type
+#             reaction.save()
+#     else:
+#         # Si l'utilisateur n'a pas encore réagi, créez une nouvelle réaction
+#         reaction.type_reaction = reaction_type
+#         reaction.save()
+#
+#     return redirect('home:detail_publication', id_publication=id_publication)
 
 
 
@@ -232,6 +249,12 @@ def react_to_publication(request, id_publication, reaction_type):
             type_reaction=reaction_type
         )
         messages.success(request, f'Vous avez réagi avec "{reaction_type}".')
+
+    # Ajouter une notification
+    Notification.objects.create(
+        utilisateur=publication.autheur,  # L'utilisateur qui recevra la notification
+        message=f"{request.user.username} a réagi à votre publication avec {reaction_type}."
+    )
 
     return redirect('home:detail_publication', id_publication=publication.id)
 

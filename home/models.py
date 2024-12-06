@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from django.utils.timezone import now
+
+
 User = get_user_model()
 
 
@@ -80,3 +83,15 @@ class Reaction(models.Model):
 
     def __str__(self):
         return f"{self.autheur} a réagi sur {self.publication} avec {self.type_reaction}"
+
+
+
+
+class Notification(models.Model):
+    utilisateur = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
+    message = models.TextField()
+    date_creation = models.DateTimeField(default=now)
+    lu = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification pour {self.utilisateur} : {self.message[:50]}"
