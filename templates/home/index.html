@@ -188,25 +188,7 @@
 
 
                             <!-- Afficher les réactions -->
-                            <!-- <div>
-                                <h3>Réactions</h3>
-                                <form class="inline" action="{% url 'home:add_reaction' post.id 'Like' %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit">J'aime</button>
-                                </form>
-                                <form class="inline" action="{% url 'home:add_reaction' post.id 'cool' %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit">Cool</button>
-                                </form>
-                                <form class="inline" action="{% url 'home:add_reaction' post.id 'jadore' %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit">J'adore</button>
-                                </form>
-                                <form class="inline"action="{% url 'home:add_reaction' post.id 'dislike' %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit">J'aime pas</button>
-                                </form>
-                            </div> -->
+
                             <form method="POST" action="{% url 'home:react_to_publication' post.id 'like' %}">
                                 {% csrf_token %}
                                 <button type="submit">

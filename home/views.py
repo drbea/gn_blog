@@ -147,7 +147,7 @@ def create_comment(request, id_publication):
         # Ajouter une notification
         Notification.objects.create(
             utilisateur=publication.autheur,  # L'utilisateur qui recevra la notification
-            message=f"{request.user.username} a commente la publication {publication.sujet[:20]}."
+            message=f"{request.user.username} a commente la publication <b>{publication.contenu[:20]}</b>."
         )
 
         return redirect("home:detail_publication", publication.id)
