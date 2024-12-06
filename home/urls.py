@@ -13,4 +13,7 @@ urlpatterns = [
 
 
 
+    path('post/<int:id_publication>/reaction/<str:reaction_type>/', views.add_or_remove_reaction, name='add_reaction'),
+
+
 ]

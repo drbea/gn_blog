@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from . models import Categorie, Publication, Commentaire, Reaction, Sujet
-
+from django.contrib.auth.decorators import login_required
 from message.models import Message
 from django.contrib.auth import get_user_model
 from django.db.models import Q
@@ -163,3 +163,39 @@ def delete_comment(request, id_commentaire):
         "commentaire": commentaire
         }
     return render(request, 'home/post_delete.html', context)
+
+
+
+
+@login_required
+def add_or_remove_reaction(request, id_publication, reaction_type):
+    publication = get_object_or_404(Publication, id=id_publication)
+    user = request.user
+
+    # Vérifiez si l'utilisateur a déjà réagi à cette publication
+    reaction, created = Reaction.objects.get_or_create(
+        utilisateur=user,
+        publication=publication,
+        defaults={'type_reaction': reaction_type}
+    )
+
+    if not created:
+        # Si l'utilisateur a déjà réagi, mettez à jour la réaction
+        if reaction.type_reaction == reaction_type:
+            # Si la réaction est déjà du même type, supprimez-la
+            reaction.delete()
+        else:
+            # Sinon, mettez à jour la réaction
+            reaction.type_reaction = reaction_type
+            reaction.save()
+    else:
+        # Si l'utilisateur n'a pas encore réagi, créez une nouvelle réaction
+        reaction.type_reaction = reaction_type
+        reaction.save()
+
+    return redirect('home:detail_publication', id_publication=id_publication)
+
+    
+
+
+####################333
