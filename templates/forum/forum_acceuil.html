@@ -1,0 +1,127 @@
+{% extends "base_forum.html" %}
+{% load static %}
+{% block title %} Acceuil {% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Bienvenue sur le Forum</h1>
+
+    <div class="forum-actions">
+        <!-- Lien pour créer une nouvelle discussion -->
+        <a href="">Créer une nouvelle discussion</a>
+    </div>
+
+    <div class="forum-list">
+        {% if posts %}
+            <h2>Discussions en cours :</h2>
+            {% for post in posts %}
+                <div class="forum-item">
+                    <h3><a href="{% url 'forum:detail_publication' post.id %}">{{ post.sujet }}</a></h3>
+                    <p>{{ post.category.titre }}</p>
+                    <p class="meta">
+                        Créée par <strong>{{ post.auteur.username }}</strong> le {{ post.date_creation|date:"d M Y" }} |
+                        <strong>{{ topic.posts.count }}</strong> messages
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucune discussion n'a encore été lancée. Soyez le premier à créer un sujet !</p>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+<!-- forum/templates/forum/forum_home.html -->
+{% block css %}
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 100%;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .forum-list {
+        margin-top: 30px;
+    }
+
+    .forum-item {
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .forum-item:last-child {
+        border-bottom: none;
+    }
+
+    .forum-item a {
+        text-decoration: none;
+        font-size: 18px;
+        color: #007BFF;
+    }
+
+    .forum-item a:hover {
+        text-decoration: underline;
+    }
+
+    .forum-item .meta {
+        font-size: 14px;
+        color: #777;
+    }
+
+    .forum-actions {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .forum-actions a {
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+    .forum-actions a:hover {
+        background-color: #0056b3;
+    }
+
+    .sidebar {
+    display: none !important;
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block js %}
+
+<script>
+    // Sidebar Toggler
+    $('.sidebar').removeClass("open"); // Supprime la classe "open" dès le début
+    </script>
+{% endblock %}

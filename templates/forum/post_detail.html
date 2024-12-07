@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} {{ publication.sujet}} {% endblock %}
+
+{% block css %}
+ <!-- <link href="{% static 'css/index.css' %}" rel="stylesheet"> -->
+{% endblock %}
+
+{% block sidebar %}
+ <!-- <link href="{% static 'css/index.css' %}" rel="stylesheet"> -->
+{% endblock %}
+
+{% block content %}
+<h1><a href="{% url 'forum:detail_publication' post.id %}">{{ post.sujet }}</a></h1>
+<div class="post bg-secondary text-white">
+  <p class="fs-2 ">{{ post.contenu }}</p>
+  <p>by: <span class="fw-bold">@{{ post.auteur.username }} </span>
+      {{ post.date_creation | timesince }} ago
+  </p>
+  <p>Categories: {{post.category.titre}}
+      {% for category in post.category.all %}
+      {{ category.titre }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+  </p>
+
+</div>
+
+
+<h3 class="h3">Add a comment</h3>
+<form method="post" class="form-class" action="{% url 'forum:create_comment' post.id %}">
+    {% csrf_token %}
+    <input type="text" name="commentaire" value="" placeholder="Ecrire votre commentaire">
+    <button type="submit">commenter</button>
+</form>
+<br>
+<h2 class="h2">Commentaires</h2>
+<ul>
+    {% for comment in commentaires %}
+
+      <li>{{ comment.contenu }} -
+        <span class="fw-bold">@{{ comment.autheur.username }} </span>
+        <span class="">({{ comment.date_creation|timesince }} ago)</span>
+    </li>
+    <hr>
+    {% endfor %}
+</ul>
+
+{% endblock %}
