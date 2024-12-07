@@ -13,6 +13,9 @@
     z-index: 99;
 }
 
+.sidebar {
+    display: none;
+}
 
 
 

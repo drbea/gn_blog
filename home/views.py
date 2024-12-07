@@ -37,7 +37,7 @@ def liste_notifications(request):
 
 
 ## Gestion des publoications
-@login_required
+# @login_required
 def index(request):
     publication = Publication.objects.all()
     categorie = Categorie.objects.all()
@@ -179,7 +179,7 @@ def delete_comment(request, id_commentaire):
         return redirect("home:index")
 
     context = {
-        "publication": publication,
+        # "publication": publication,
         "commentaire": commentaire
         }
     return render(request, 'home/post_delete.html', context)
