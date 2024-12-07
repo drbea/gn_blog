@@ -146,7 +146,8 @@ MEDIA_URL = '/media/'  # The URL prefix for where media files will be served fro
 MEDIA_ROOT = BASE_DIR / 'static/img'  # The directory where media files will be stored
 
 AUTH_USER_MODEL = 'accounts.User'
-
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "home:index"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

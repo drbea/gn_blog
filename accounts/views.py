@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.mail import EmailMessage, send_mail
 
@@ -12,6 +13,10 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from . models import Followers
 from config import settings
+
+def logout_suer(request):
+    logout(request)
+    return HttpResponse("<p class='bg-sucess text-center'> deconnection effctué avec succès .. </p>")
 
 
 # Create your views here.

@@ -60,7 +60,10 @@
         <!-- Content Start -->
         <div class="content {% block body_class %}{% endblock %}">
             <!-- Navbar Start -->
+            {% block navbar %}
             {% include "partials/navbar.html" %}
+
+            {% endblock %}
             <!-- Navbar End -->
 
             <main>

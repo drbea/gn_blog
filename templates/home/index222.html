@@ -73,42 +73,25 @@
      bottom: 2px;
      right: 3.5px;
    }
+
+   .btn_2 {
+    background-color: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 30%);
+    cursor: pointer;
+   }
+
+   
  </style>
 {% endblock %}
 {% block content %}
 
 
     <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar Gauche - Categories -->
-            <div class="col-md-3">
-                <div class="topics">
-                    <div class="topics__header">
-                        <h2>Afficher les categories</h2>
-                    </div>
-                    <ul class="topics__list list-group">
-                        <li class="list-group-item">
-                            <a href="/" class="active">toute les categories <span>{{ categories.count}} </span></a>
-                        </li>
-                        {% for category in categories %}
-                        <li class="list-group-item">
-                            <a href="{% url 'home:type_categorie' category.id %}">{{ category.titre }} <span>{{ categories.publication_set.count }}</span></a>
-                        </li>
-                        {% endfor %}
-       
-                    </ul>
-                    <a class="btn btn-link" href="topics.html">
-                        More
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                            <title>chevron-down</title>
-                            <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Milieu - Fil d'actualité -->
-            <div class="col-md-6">
+        <div class="row" >
+             <!-- Milieu - Fil d'actualité -->
+            <div class="col-md-8">
                 <div class="roomList">
                     <!-- <div class="mobile-menu">
                         <form class="header__search">
@@ -127,20 +110,22 @@
                             <a class="btn btn-primary btn-pill" href="#">Recent Activities</a>
                         </div>
                     </div> -->
-                    <div class="roomList__header">
+                    <div class="roomList__header" style="display: flex; margin-top: 15px;">
                         <div>
                             <h2>Fil d'actualité</h2>
-                            <p>{{publications.count }} Publications available</p>
+                            <p>{{publications.count }} Publications</p>
                         </div>
-                        <a class="btn btn-primary" href="{% url 'home:create_publication' %}">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                                <title>add</title>
-                                <path
-                                    d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
-                                ></path>
-                            </svg>
-                            Creer Publication
-                        </a>
+                        <div style="margin-left: 275px;">
+                            <a class="btn btn-primary" href="{% url 'home:create_publication' %}">
+                                <!-- <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                    <title>add</title>
+                                    <path
+                                        d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
+                                    ></path>
+                                </svg> -->
+                                Créer une Publication
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Exemple de publication -->
@@ -159,13 +144,12 @@
                         </div>
                         <div class="roomListRoom__content card-body">
                             <h1><a href="{% url 'home:detail_publication' post.id %}">{{ post.sujet }}</a></h1>
-
                             <p>
                                 {{ post.contenu }}.
                             </p>
                         </div>
                         <div class="roomListRoom__meta card-footer d-flex justify-content-between align-items-center">
-                            <a href="room.html" class="roomListRoom__joined d-flex align-items-center">
+                            <!-- <a href="room.html" class="roomListRoom__joined d-flex align-items-center">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                                     <title>user-group</title>
                                     <path
@@ -182,25 +166,48 @@
                                     ></path>
                                 </svg>
                                  {{ post.reactions.count }} reactions
-                            </a>
-
-
-
+                            </a> -->
 
                             <!-- Afficher les réactions -->
 
-                            <form method="POST" action="{% url 'home:react_to_publication' post.id 'like' %}">
+                            <!-- <form method="POST" action="{% url 'home:react_to_publication' post.id 'like' %}">
                                 {% csrf_token %}
-                                <button type="submit">
-                                    J'aime
-                                </button>
-                            </form>
-
-                            <form method="POST" action="{% url 'home:react_to_publication' post.id 'jadore' %}">
+                                <a href="#" class="btn_2 ">
+                                    <i class="far fa-thumbs-up"></i>
+                                    {{ post.reactions.count }}
+                                </a>
+                            </form> -->
+                            <a href="{% url 'home:react_to_publication' post.id 'like' %}" class="btn_2 ">
+                                <i class="far fa-thumbs-up"></i>
+                                <!-- {{ post.reactions.count }} -->
+                            </a>
+                            <!-- <form method="POST" action="{% url 'home:react_to_publication' post.id 'jadore' %}">
                                 {% csrf_token %}
-                                <button type="submit">
-                                    J'adore
-                                </button>
+                                <a href="#" class="btn_2 ">
+                                    <i class="far fa-heart"></i>
+                                    {{ post.reactions.count }}
+                                </a>
+                            </form> -->
+                            <a href="{% url 'home:react_to_publication' post.id 'jadore' %}" class="btn_2 ">
+                                <i class="far fa-heart"></i>
+                                <!-- {{ post.reactions.count }} -->
+                            </a>
+                            <!-- <form method="POST" action="{% url 'home:react_to_publication' post.id 'commentaire' %}">
+                                {% csrf_token %}
+                                <a href="#" class="btn_2 ">
+                                    <i class="far fa-comment"></i>
+                                    {{ post.reactions.count }}
+                                </a>
+                            </form> -->
+                            <a href="{% url 'home:detail_publication' post.id %}" class="btn_2 ">
+                                <i class="far fa-comment"></i>
+                               
+                            </a>
+                            <form method="POST" action="{% url 'home:react_to_publication' post.id 'commentaire' %}">
+                                {% csrf_token %}
+                                <a href="#" class="btn_2">
+                                    <i class="fas fa-share"> Partagez</i>                                    
+                                </a>
                             </form>
 
 
@@ -212,9 +219,29 @@
                     {% endfor %}
                 </div>
             </div>
+            
+            <!-- Sidebar Gauche - Categories -->
+            <div class="col-md-3" style="margin-top: 15px;">
+                <div class="topics">
+                    <div class="topics__header">
+                        <h2>Categories</h2>
+                    </div>
+                    <ul class="topics__list list-group">
+                        <li class="list-group-item">
+                            <a href="{% url 'home:index' %}" class="active">Toutes les categories <span>({{ categories.count }})</span></a>
+                        </li>
+                        {% for category in categories %}
+                        <li class="list-group-item">
+                            <a href="{% url 'home:type_categorie' category.id %}"> {{category.titre }}<span></span></a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
 
             <!-- Sidebar Droit - Activités -->
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <div class="activities">
                     <div class="activities__header">
                         <h2>Recent Activities</h2>
@@ -279,7 +306,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 {% endblock %}

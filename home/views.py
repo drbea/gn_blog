@@ -1,9 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from . models import Categorie, Publication, Commentaire, Reaction, Sujet, Notification
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from message.models import Message
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.db.models import Q
 
 User = get_user_model()
@@ -36,6 +37,7 @@ def liste_notifications(request):
 
 
 ## Gestion des publoications
+@login_required
 def index(request):
     publication = Publication.objects.all()
     categorie = Categorie.objects.all()
@@ -45,7 +47,7 @@ def index(request):
         "categories": categorie,
         "conversations": list_messages(request),
     }
-    return render(request, "home/index.html", context)
+    return render(request, "home/index222.html", context)
 
 def detail_publication(request, id_publication):
 
@@ -216,7 +218,7 @@ def delete_comment(request, id_commentaire):
 
 
 
-####################333
+####################
 
 def react_to_publication(request, id_publication, reaction_type):
     if not request.user.is_authenticated:
@@ -263,3 +265,15 @@ def dashboard(request):
 
     context = {}
     return render(request, "home/dashboard.html", context)
+
+def categories(request,id_category):
+
+    categorie = get_object_or_404(Categorie, id = id_category)
+    posts = Publication.objects.filter(category = categorie)
+    categories = Categorie.objects.all()
+
+    context = {
+        "publications": posts,
+        "categories": categories
+    }
+    return render(request, "home/index.html", context)
