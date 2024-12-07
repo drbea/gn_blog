@@ -277,3 +277,13 @@ def categories(request,id_category):
         "categories": categories
     }
     return render(request, "home/index.html", context)
+
+def index_blog (request):
+    posts = Publication.objects.all()
+    categories = Categorie.objects.all()
+
+    context = {
+        "publications": posts,
+        "categories": categories
+    }
+    return render(request, "home/index_blog.html",context)
