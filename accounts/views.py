@@ -14,6 +14,8 @@ from .tokens import account_activation_token
 from . models import Followers
 from config import settings
 
+from django.http import HttpResponseForbidden
+
 def logout_suer(request):
     logout(request)
     return HttpResponse("<p class='bg-sucess text-center'> deconnection effctué avec succès .. </p>")
@@ -22,6 +24,13 @@ def logout_suer(request):
 # Create your views here.
 User = get_user_model()
 
+def test_roles(request):
+    # Exemple : Vérification des rôles
+    admin_user = User.objects.get(username="admin_user")
+    if admin_user.role == User.ADMIN:
+        return HttpResponse("Cet utilisateur est un admin.")
+    else:
+        return HttpResponse("Cet utilisateur n'est pas un admin.")
 
 def register_page(request):
     if request.method == 'POST':
@@ -152,3 +161,20 @@ def user_list(request):
             following_status[user.id] = Followers.objects.filter(followers=request.user, followed=user).exists()
 
     return render(request, 'accounts/user_list.html', {'users': users, 'following_status': following_status})
+
+
+def test_roles(request):
+    if request.user.role == User.ADMIN:
+        return HttpResponse("Bienvenue, Admin !")
+    elif request.user.role == User.MODERATOR:
+        return HttpResponse("Bienvenue, Modérateur !")
+    elif request.user.role == User.USER:
+        return HttpResponse("Bienvenue, Utilisateur !")
+    else:
+        return HttpResponse("Rôle inconnu.")
+
+def admin_view(request):
+    if request.user.role != User.ADMIN:
+        return HttpResponseForbidden("Access denied. Admins only.")
+    # Logic for admin view
+    return render(request, 'admin_page.html')
