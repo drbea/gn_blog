@@ -4,7 +4,7 @@ from . models import Categorie, Publication, Commentaire, Reaction, Sujet, Notif
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from message.models import Message
-from django.contrib.auth import get_user_model, logout
+from django.contrib.auth import get_user_model #, logout
 from django.db.models import Q
 
 User = get_user_model()

@@ -88,17 +88,22 @@
 
                 </div><!-- End post content -->
 
-                <!-- <div class="meta-bottom">
+                <div class="meta-bottom">
                   <i class="bi bi-folder"></i>
                   <ul class="cats">
-                    <li><a href="#">Business</a></li>
+                    <li><a href="#"> {{ post.reactions_set.count }} reactions</a></li>
                   </ul>
 
-                  <i class="bi bi-tags"></i>
+                  <!-- <i class="bi bi-tags"></i> -->
                   <ul class="tags">
-                    <li><a href="#">Creative</a></li>
-                    <li><a href="#">Tips</a></li>
-                    <li><a href="#">Marketing</a></li>
+                    <li><a href="#" class="w-2"><i class="fa-regular fa-thumbs-up"></i></a></li>
+                    <li><a href="#"><i class="fa-regular fa-thumbs-down"></i></a></li>
+     <form method="POST" action="{% url 'home:react_to_publication' post.id 'like' %}">
+                                {% csrf_token %}
+                                <button type="submit">
+                                    J'aime
+                                </button>
+                            </form>
                   </ul>
                 </div><!-- End meta bottom -->
 
