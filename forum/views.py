@@ -35,8 +35,10 @@ def detail_publication(request, id_publication):
     context = {
         "post": publication,
         "commentaires": commentaires,
+        "categories" :CategoryPost.objects.all()
+
     }
-    return render(request, "forum/post_detail.html", context)
+    return render(request, "forum/blog-details.html", context)
 
 
 
@@ -51,8 +53,6 @@ def create_comment(request, id_publication):
             contenu = contenu_commentaire
         )
         new_commentaire.save()
-
-
 
         return redirect("forum:detail_publication", publication.id)
     context = {

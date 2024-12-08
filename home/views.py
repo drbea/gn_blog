@@ -47,7 +47,7 @@ def index(request):
         "categories": categorie,
         "conversations": list_messages(request),
     }
-    return render(request, "home/index222.html", context)
+    return render(request, "home/index_blog.html", context)
 
 def detail_publication(request, id_publication):
 
