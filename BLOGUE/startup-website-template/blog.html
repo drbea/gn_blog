@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
 
 <head>
     <meta charset="utf-8">
@@ -22,14 +21,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{% static 'blog/lib/owlcarousel/assets/owl.carousel.min.css'  %}" rel="stylesheet">
-    <link href="{% static 'blog/lib/animate/animate.min.css'  %}" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'blog/css/bootstrap.min.css'  %}" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{% static 'blog/css/style.css'  %}" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -68,7 +67,7 @@
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
             <a href="index.html" class="navbar-brand p-0">
-                <h1 class="m-0"><i class="fa fa-user-tie me-2"></i>GN-BLOG</h1>
+                <h1 class="m-0"><i class="fa fa-user-tie me-2"></i>Startup</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars"></span>
@@ -76,8 +75,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
                     <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="{% url 'forum:index' %}" class="nav-item nav-link">forum</a>
-                    <!-- <a href="service.html" class="nav-item nav-link">Services</a> -->
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <a href="service.html" class="nav-item nav-link">Services</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Blog</a>
                         <div class="dropdown-menu m-0">
@@ -95,22 +94,20 @@
                             <a href="quote.html" class="dropdown-item">Free Quote</a>
                         </div>
                     </div>
-                    <a href="{% url 'home:blog-publication' %}" class="nav-item nav-link">About</a>
-                    <a href="{% url 'home:create_publication' %}" class="nav-item nav-link">Créer une publication</a>
-
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
                 <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
-                <!-- <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-primary py-2 px-4 ms-3">Download Pro Version</a> -->
+                <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-primary py-2 px-4 ms-3">Download Pro Version</a>
             </div>
         </nav>
 
         <div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
             <div class="row py-5">
                 <div class="col-12 pt-lg-5 mt-lg-5 text-center">
-                    <h1 class="display-4 text-white animated zoomIn">BIENVENUE SUR GN-BLOG</h1>
-                     <a href="" class="h5 text-white"></a>
-                    <!-- <i class="far fa-circle text-white px-2"></i> -->
-                    <!-- <a href="" class="h5 text-white">Blog Grid</a> -->
+                    <h1 class="display-4 text-white animated zoomIn">Blog Grid</h1>
+                    <a href="" class="h5 text-white">Home</a>
+                    <i class="far fa-circle text-white px-2"></i>
+                    <a href="" class="h5 text-white">Blog Grid</a>
                 </div>
             </div>
         </div>
@@ -144,61 +141,10 @@
                 <!-- Blog list Start -->
                 <div class="col-lg-8">
                     <div class="row g-5">
-                      {% for post in publications %}
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-1.jpg' %}" alt="">
-                                    <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">{{ post.category }} </a>
-                                </div>
-                                <div class="p-4">
-                                    <div class="d-flex mb-3">
-                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i>{{ post.autheur.username }} </small>
-                                        <small><i class="far fa-calendar-alt text-primary me-2"></i>{{ post.date_creation|timesince  }}</small>
-                                    </div>
-                                    <h4 class="mb-3">{{post.sujet }}</h4>
-                                    <p>{{ post.contenu|truncatechars:50 }}</p>
-                                   <div>
-                                    <div class="d-flex align-items-center">
-                                        <a href="{% url 'home:react_to_publication' post.id 'like' %}">
-                                            <i class="fas fa-thumbs-up fa-2x"></i>
-                                        </a>
-                                        <a href="{% url 'home:react_to_publication' post.id 'dislike' %}" class="d-flex align-items-center mx-3">
-                                            <i class="fas fa-thumbs-down dislike-icon mr-1 fa-2x"></i>
-                                        </a>
-
-                                        <a class="text-uppercase btn btn-outline-primary custom-btn" href="">
-                                            Voir plus <i class="bi bi-arrow-right"></i> <i class="bi bi-eye ml-2"></i>
-                                        </a>
-                                    </div>
-                                   </div>
-                                </div>
-
-                            </div>
-                        </div>
-                      {% endfor %}
-                        <!--
-                        <div class="col-md-6 wow slideInUp" data-wow-delay="0.6s">
-                            <div class="blog-item bg-light rounded overflow-hidden">
-                                <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-2.jpg' %}" alt="">
-                                    <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
-                                </div>
-                                <div class="p-4">
-                                    <div class="d-flex mb-3">
-                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
-                                        <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                                    </div>
-                                    <h4 class="mb-3">How to build a website</h4>
-                                    <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                                    <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
-                            <div class="blog-item bg-light rounded overflow-hidden">
-                                <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-3.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-1.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -215,7 +161,7 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.6s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-1.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-2.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -232,7 +178,7 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-2.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-3.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -249,7 +195,7 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.6s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-3.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-1.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -266,7 +212,7 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-1.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-2.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -283,7 +229,7 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.6s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-2.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-3.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -300,7 +246,7 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-3.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-1.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -317,7 +263,7 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.6s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-1.jpg' %}" alt="">
+                                    <img class="img-fluid" src="img/blog-2.jpg" alt="">
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
                                 </div>
                                 <div class="p-4">
@@ -330,9 +276,41 @@
                                     <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
                                 </div>
                             </div>
-                        </div> -->
-
-
+                        </div>
+                        <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
+                            <div class="blog-item bg-light rounded overflow-hidden">
+                                <div class="blog-img position-relative overflow-hidden">
+                                    <img class="img-fluid" src="img/blog-3.jpg" alt="">
+                                    <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
+                                </div>
+                                <div class="p-4">
+                                    <div class="d-flex mb-3">
+                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                        <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                    </div>
+                                    <h4 class="mb-3">How to build a website</h4>
+                                    <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                                    <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 wow slideInUp" data-wow-delay="0.6s">
+                            <div class="blog-item bg-light rounded overflow-hidden">
+                                <div class="blog-img position-relative overflow-hidden">
+                                    <img class="img-fluid" src="img/blog-1.jpg" alt="">
+                                    <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
+                                </div>
+                                <div class="p-4">
+                                    <div class="d-flex mb-3">
+                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                        <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                    </div>
+                                    <h4 class="mb-3">How to build a website</h4>
+                                    <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                                    <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12 wow slideInUp" data-wow-delay="0.1s">
                             <nav aria-label="Page navigation">
                               <ul class="pagination pagination-lg m-0">
@@ -355,7 +333,7 @@
                     </div>
                 </div>
                 <!-- Blog list End -->
-
+    
                 <!-- Sidebar Start -->
                 <div class="col-lg-4">
                     <!-- Search Form Start -->
@@ -366,43 +344,66 @@
                         </div>
                     </div>
                     <!-- Search Form End -->
-
+    
                     <!-- Category Start -->
                     <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
                         <div class="section-title section-title-sm position-relative pb-3 mb-4">
                             <h3 class="mb-0">Categories</h3>
                         </div>
                         <div class="link-animated d-flex flex-column justify-content-start">
-                        {% for element in categories %}
-                   <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i> {{element.titre}} </a>
-                   {% endfor %}
-
+                            <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Design</a>
+                            <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Development</a>
+                            <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Development</a>
+                            <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Keyword Research</a>
+                            <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Email Marketing</a>
                         </div>
                     </div>
                     <!-- Category End -->
-
+    
                     <!-- Recent Post Start -->
                     <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
                         <div class="section-title section-title-sm position-relative pb-3 mb-4">
                             <h3 class="mb-0">Recent Post</h3>
                         </div>
-                        {% for element in publications %}
                         <div class="d-flex rounded overflow-hidden mb-3">
                             <img class="img-fluid" src="img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">{{ element.contenu }}
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
                             </a>
                         </div>
-                        {% endfor %}
-
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
+                            </a>
+                        </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
+                            </a>
+                        </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
+                            </a>
+                        </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
+                            </a>
+                        </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
+                            </a>
+                        </div>
                     </div>
                     <!-- Recent Post End -->
-
+    
                     <!-- Image Start -->
                     <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
                         <img src="img/blog-1.jpg" alt="" class="img-fluid rounded">
                     </div>
                     <!-- Image End -->
-
+    
                     <!-- Tags Start -->
                     <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
                         <div class="section-title section-title-sm position-relative pb-3 mb-4">
@@ -424,7 +425,7 @@
                         </div>
                     </div>
                     <!-- Tags End -->
-
+    
                     <!-- Plain Text Start -->
                     <div class="wow slideInUp" data-wow-delay="0.1s">
                         <div class="section-title section-title-sm position-relative pb-3 mb-4">
@@ -463,7 +464,7 @@
         </div>
     </div>
     <!-- Vendor End -->
-
+    
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light mt-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -544,8 +545,8 @@
             <div class="row justify-content-end">
                 <div class="col-lg-8 col-md-6">
                     <div class="d-flex align-items-center justify-content-center" style="height: 75px;">
-                        <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">Your Site Name</a>. All Rights Reserved.
-
+                        <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">Your Site Name</a>. All Rights Reserved. 
+						
 						<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
 						Designed by <a class="text-white border-bottom" href="https://htmlcodex.com">HTML Codex</a></p>
                     </div>
@@ -563,14 +564,14 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'blog/lib/wow/wow.min.js'  %}"></script>
-    <script src="{% static 'blog/lib/easing/easing.min.js'  %}"></script>
-    <script src="{% static 'blog/lib/waypoints/waypoints.min.js'  %}"></script>
-    <script src="{% static 'blog/lib/counterup/counterup.min.js'  %}"></script>
-    <script src="{% static 'blog/lib/owlcarousel/owl.carousel.min.js'  %}"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="{% static 'blog/js/main.js'  %}"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
