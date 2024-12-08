@@ -53,7 +53,7 @@
           <li><a href="{% url 'forum:index' %}" class="active">Acceuil<br></a></li>
           <li><a href="#about">Sujets/category</a></li>
 
-          <li><a href="blog.html">Blog</a></li>
+          <li><a href="{% url 'home:index' %}">Blog</a></li>
           {% if not request.user.is_authenticated %}
           <li class="dropdown"><a href="#"><span>S'authentication</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
@@ -73,7 +73,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="">Creer une discussion</a>
+      <a class="btn-getstarted" href="{% url 'forum:create_post' %}">Creer une discussion</a>
 
     </div>
   </header>

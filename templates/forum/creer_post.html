@@ -4,11 +4,121 @@
 
 {% block sidebar %}
 {% endblock %}
-
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-size: 24px;
+    }
+</style>
 {% block content %}
-<div class="container">
 
-    <h1>creer une discussion</h1>
-</div>
+    <div class="form-container">
+        <h2 class="form-title">Créer un Post</h2>
+        <form action="{% url 'forum:create_post' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Sujet -->
+            <!-- <div class="mb-3">
+                <label for="sujet" class="form-label">Sujet</label>
+                <select name="sujet" id="sujet" class="form-select" required>
+                    <option value="">-- Sélectionnez un sujet --</option>
+                    {% for sujet in sujets %}
+                    <option value="{{ sujet.id }}">{{ sujet.titre }}</option>
+                    {% endfor %}
+                </select>
+            </div> -->
+            <!-- Catégories -->
+            <!-- <div class="mb-3">
+                <label for="categories" class="form-label">Catégories</label>
+                <select name="categories" id="categories" class="form-select" multiple required>
+                    {% for categorie in categories %}
+                    <option value="{{ categorie.id }}">{{ categorie.titre }}</option>
+                    {% endfor %}
+                </select>
+                <small class="text-muted">Maintenez Ctrl (ou Command sur Mac) pour sélectionner plusieurs catégories.</small>
+            </div> -->
+
+
+            <div class="mb-3">
+                <label for="sujet_titre" class="form-label">Nouveau Sujet (ou sélectionnez un existant)</label>
+                <input type="text" name="sujet_titre" id="sujet_titre" class="form-control" placeholder="Entrez un nouveau sujet">
+                <small class="text-muted">Laissez vide pour sélectionner un sujet existant.</small>
+            </div>
+            <div class="mb-3">
+                <label for="sujet" class="form-label">Sujet existant</label>
+                <select name="sujet" id="sujet" class="form-select">
+                    <option value="">-- Sélectionnez un sujet existant --</option>
+                    {% for sujet in sujets %}
+                    <option value="{{ sujet.titre }}">{{ sujet.titre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="categories_titres" class="form-label">Nouvelles Catégories (séparées par une virgule)</label>
+                <input type="text" name="categories_titres" id="categories_titres" class="form-control" placeholder="Exemple: Développement, Python, Django">
+                <small class="text-muted">Ajoutez plusieurs catégories séparées par une virgule.</small>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Contenu -->
+            <div class="mb-3">
+                <label for="contenu" class="form-label">Contenu</label>
+                <textarea name="contenu" id="contenu" rows="5" class="form-control" placeholder="Écrivez votre post ici..." required></textarea>
+            </div>
+            <!-- Image -->
+            <div class="mb-3">
+                <label for="image" class="form-label">Image (optionnelle)</label>
+                <input type="file" name="image" id="image" class="form-control">
+            </div>
+            <!-- Bouton de soumission -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Publier</button>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}

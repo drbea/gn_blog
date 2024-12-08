@@ -3,6 +3,8 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import SujetForum, ForumPost, CategoryPost, Commentaires
 
+from django.contrib.auth.decorators import login_required
+
 # page dacceuil du forum
 def acceuil_forum(request):
     sujets = SujetForum.objects.all()
@@ -60,31 +62,99 @@ def create_comment(request, id_publication):
     }
     return render(request, "home/post_detail.html", context)
 
-
-
-def create_publication(request):
-    if request.method == 'POST':
-        sujet_id = request.POST.get('sujet')
-        category_titre = request.POST.get('category')
-        contenu = request.POST.get('contenu')
-
-        sujet = SujetForum.objects.get(id=sujet_id)
-
-        # Vérifie si la catégorie existe déjà
-        categorie, created = CategoryPost.objects.get_or_create(titre=category_titre)
-
-        publication = ForumPost(
-            sujet=sujet,
-            category=categorie,
-            contenu=contenu,
-            autheur=request.user
+# @login_required
+def creer_post(request):
+    if request.method == "POST":
+        # Récupérer ou créer un sujet
+        sujet_titre = request.POST.get("sujet_titre", "").strip()
+        sujet, _ = SujetForum.objects.get_or_create(
+            titre=sujet_titre,
+            defaults={"autheur": request.user}
         )
-        publication.save()
 
-        return redirect('home:index')  # Redirige vers la liste des publications
+        # Récupérer ou créer les catégories
+        categories_titres = request.POST.getlist("categories_titres")
+        categories = []
+        for titre in categories_titres:
+            categorie, _ = CategoryPost.objects.get_or_create(titre=titre.strip())
+            categories.append(categorie)
 
-    context = {
-        "sujets": SujetForum.objects.all(),
-        "categories": CategoryPost.objects.all(),
-    }
-    return render(request, 'home/post_create.html', context)
+        # Récupérer le contenu et l'image
+        contenu = request.POST["contenu"]
+        image = request.FILES.get("image")
+
+        # Créer le post
+        post = ForumPost.objects.create(
+            sujet=sujet,
+            auteur=request.user,
+            contenu=contenu,
+            image=image,
+        )
+        post.category.set(categories)  # Associer les catégories au post
+        post.save()
+
+        return redirect("forum:index")
+
+    # Afficher le formulaire
+    sujets = SujetForum.objects.all()
+    categories = CategoryPost.objects.all()
+    return render(request, "forum/creer_post.html", {"sujets": sujets, "categories": categories})
+
+#
+#
+# def create_publication(request):
+#     if request.method == 'POST':
+#         sujet_id = request.POST.get('sujet')
+#         category_titre = request.POST.get('category')
+#         contenu = request.POST.get('contenu')
+#
+#         sujet = Sujet.objects.get(id=sujet_id)
+#
+#         # Vérifie si la catégorie existe déjà
+#         categorie, created = Categorie.objects.get_or_create(titre=category_titre)
+#
+#         publication = Publication(
+#             sujet=sujet,
+#             category=categorie,
+#             contenu=contenu,
+#             autheur=request.user
+#         )
+#         publication.save()
+#
+#         return redirect('home:index')  # Redirige vers la liste des publications
+#
+#     context = {
+#         "sujets": Sujet.objects.all(),
+#         "categories": Categorie.objects.all(),
+#         # "conversations": list_messages(request),
+#
+#     }
+#     return render(request, 'home/post_create.html', context)
+#
+#
+# def create_publication(request):
+#     if request.method == 'POST':
+#         sujet_id = request.POST.get('sujet')
+#         category_titre = request.POST.get('category')
+#         contenu = request.POST.get('contenu')
+#
+#         sujet = SujetForum.objects.get(id=sujet_id)
+#
+#         # Vérifie si la catégorie existe déjà
+#         categorie, created = CategoryPost.objects.get_or_create(titre=category_titre)
+#
+#         publication = ForumPost(
+#             sujet=sujet,
+#             category=categorie,
+#             contenu=contenu,
+#             autheur=request.user
+#         )
+#         publication.save()
+#
+#         return redirect('home:index')  # Redirige vers la liste des publications
+#
+#     context = {
+#         "sujets": SujetForum.objects.all(),
+#         "categories": CategoryPost.objects.all(),
+#     }
+#     return render(request, 'home/post_create.html', context)
