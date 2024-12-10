@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_blog.html' %}
 {% load custom_filters %}
 
 {% block title %}Liste des utilisateurs{% endblock %}
@@ -11,6 +11,12 @@
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-body">
+                    {% if user.profile_pick %}
+                        <img src="{{ user.profile_pick.url }}" class="w-25 img-fluid flex-grow-1" alt="">
+                    {% else %}
+                    <img src="{{ user.deault_image }}" class="w-25 img-fluid" alt="">
+
+                    {% endif %}
                     <h5 class="card-title">{{ user.username }}</h5>
                     <p class="card-text">{{ user.first_name }} {{ user.last_name }}</p>
                     <a href="{% url 'accounts:user_profile' user.id %}" class="btn btn-primary">Voir le profil</a>
