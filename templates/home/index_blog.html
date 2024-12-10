@@ -16,7 +16,11 @@
                         <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
                             <div class="blog-item bg-light rounded overflow-hidden">
                                 <div class="blog-img position-relative overflow-hidden">
-                                    <img class="img-fluid" src="{% static 'blog/img/blog-1.jpg' %}" alt="">
+                                    {% if post.image %}
+                                    <img class="img-fluid" src="{{ post.image.url }}" alt="image post">
+                                    {% else %}
+                                    <img class="img-fluid" data-wow-delay="0.9s" src="{% static 'blog/img/blog-1.jpg' %}" style="object-fit: cover;">
+                        {% endif %}
                                     <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">{{ post.category }} </a>
                                 </div>
                                 <div class="p-4">
@@ -35,13 +39,24 @@
                                             <i class="fas fa-thumbs-down dislike-icon mr-1 fa-2x"></i>
                                         </a>
 
-                                        <a class="text-uppercase btn btn-outline-primary custom-btn" href="">
+                                        <a class="text-uppercase btn btn-outline-primary custom-btn" href="{% url 'home:blog-publication' post.id %}">
                                             Voir plus <i class="bi bi-arrow-right"></i> <i class="bi bi-eye ml-2"></i>
                                         </a>
                                     </div>
                                    </div>
                                 </div>
-
+                                <a class=" delete-link btn btn-outline-primary custom-btn" href="{% url 'home:delete_publication' post.id %}">
+                                    <i class="fas fa-trash-alt"></i> Supprimer
+                                </a>
+                                
+                                <style>
+                                
+                                    .delete-link:hover {
+                                        background-color: rgb(243, 14, 14); /* Fond blanc au survol */
+                                        color: #f5f6f7; /* Texte bleu au survol */
+                                    }
+                                </style>
+                                
                         </div>
                     </div>
                   {% endfor %}
@@ -87,7 +102,7 @@
                     </div>
                     <div class="link-animated d-flex flex-column justify-content-start">
                     {% for element in categories %}
-               <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i> {{element.titre}} </a>
+               <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="{% url 'home:type_categorie' element.id %}"><i class="bi bi-arrow-right me-2"></i> {{element.titre}} </a>
                {% endfor %}
 
                     </div>

@@ -130,7 +130,7 @@ def update_publication(request, id_publication):
 
 
 def delete_publication(request, id_publication):
-    if request.user.is_admin_or_moderator():
+    if not request.user.is_admin_or_moderator():
         return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer un article.")
     publication = get_object_or_404(Publication, id = id_publication)
     if request.method == "POST":
@@ -273,12 +273,16 @@ def index_blog (request):
     }
     return render(request, "home/index_blog.html",context)
 
-def blog_Publication(request):
-    posts = Publication.objects.all()
-    categories = Categorie.objects.all()
+def blog_Publication(request,id_publication):
+    publication = get_object_or_404(Publication, id = id_publication)
+    commentaires = publication.commentaire_set.all()
+    conversations =  list_messages(request) if request.user.is_authenticated else None,
 
     context = {
-        "publications": posts,
-        "categories": categories
+        "publication": publication,
+        "post": publication,
+        "commentaires": commentaires,
+        "comments": commentaires,
+        "conversations": conversations,
     }
     return render(request, "home/detailpublication.html",context)

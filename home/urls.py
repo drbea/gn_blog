@@ -16,7 +16,7 @@ urlpatterns = [
     path("post/<int:id_publication>/delete/", views.delete_publication, name = "delete_publication"),
     path("post/<int:id_publication>/comment/", views.create_comment, name = "create_comment"),
     path("index-blog/", views.index_blog, name = "index_blog"),
-    path("blog-publication", views.blog_Publication,name="blog-publication")
+    path("blog-publication/<int:id_publication>/", views.blog_Publication,name="blog-publication")
 
 
 

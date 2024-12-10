@@ -13,13 +13,13 @@
                 <a href="index.html" class="nav-item nav-link">Home</a>
                 <a href="{% url 'forum:index' %}" class="nav-item nav-link">forum</a>
                 <!-- <a href="service.html" class="nav-item nav-link">Services</a> -->
-                <div class="nav-item dropdown">
+                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Blog</a>
                     <div class="dropdown-menu m-0">
                         <a href="blog.html" class="dropdown-item active">Blog Grid</a>
                         <a href="detail.html" class="dropdown-item">Blog Detail</a>
                     </div>
-                </div>
+                </div> -->
 
 
                 <div class="nav-item dropdown">
@@ -67,7 +67,6 @@
                       </div>
                     </div>
                 </div>
-                <a href="{% url 'home:blog-publication' %}" class="nav-item nav-link">About</a>
                 <a href="{% url 'home:create_publication' %}" class="nav-item nav-link {% if request.user.role != 'Admin' %} disabled {% endif %}  %}">Créer une publication</a>
 
 
