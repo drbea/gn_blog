@@ -1,0 +1,95 @@
+
+{% load static %}
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
+        <a href="index.html" class="navbar-brand p-0">
+            <h1 class="m-0"><i class="fa fa-user-tie me-2"></i>GN-BLOG</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="index.html" class="nav-item nav-link">Home</a>
+                <a href="{% url 'forum:index' %}" class="nav-item nav-link">forum</a>
+                <!-- <a href="service.html" class="nav-item nav-link">Services</a> -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Blog</a>
+                    <div class="dropdown-menu m-0">
+                        <a href="blog.html" class="dropdown-item active">Blog Grid</a>
+                        <a href="detail.html" class="dropdown-item">Blog Detail</a>
+                    </div>
+                </div>
+
+
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Messages</a>
+                    <div class="dropdown-menu m-0">
+                      <div class="conversation-list">
+                        {% if conversations %}
+                          {% for conversation in conversations %}
+                              <a href="#" class="dropdown-item">
+                                  <div class="d-flex align-items-center">
+                                      <img class="rounded-circle" src="{% static 'img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
+                                      <div class="ms-2">
+                                          <h6 class="fw-normal mb-0">{{ conversation.user.username}} send you a message</h6>
+                                          <p>{{ conversation.last_message.contenu|truncatechars:50 }}</p>
+                                          <small>{{ conversation.last_message.timestamp|timesince }} ago</small>
+                                      </div>
+                                  </div>
+                              </a>
+                              <hr class="dropdown-divider">
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Notificatins</a>
+                    <div class="dropdown-menu m-0">
+                      <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                          <a href="#" class="dropdown-item">
+                              <h6 class="fw-normal mb-0">Profile updated</h6>
+                              <small>15 minutes ago</small>
+                          </a>
+                          <hr class="dropdown-divider">
+                          <a href="#" class="dropdown-item">
+                              <h6 class="fw-normal mb-0">New user added</h6>
+                              <small>15 minutes ago</small>
+                          </a>
+                          <hr class="dropdown-divider">
+                          <a href="#" class="dropdown-item">
+                              <h6 class="fw-normal mb-0">Password changed</h6>
+                              <small>15 minutes ago</small>
+                          </a>
+                          <hr class="dropdown-divider">
+                          <a href="#" class="dropdown-item text-center">See all notifications</a>
+                      </div>
+                    </div>
+                </div>
+                <a href="{% url 'home:blog-publication' %}" class="nav-item nav-link">About</a>
+                <a href="{% url 'home:create_publication' %}" class="nav-item nav-link {% if request.user.role != 'Admin' %} disabled {% endif %}  %}">Créer une publication</a>
+
+
+
+
+
+
+
+            </div>
+            <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
+            <!-- <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-primary py-2 px-4 ms-3">Download Pro Version</a> -->
+        </div>
+    </nav>
+
+    <div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
+        <div class="row py-5">
+            <div class="col-12 pt-lg-5 mt-lg-5 text-center">
+                <h1 class="display-4 text-white animated zoomIn">BIENVENUE SUR GN-BLOG</h1>
+                 <a href="" class="h5 text-white"></a>
+                <!-- <i class="far fa-circle text-white px-2"></i> -->
+                <!-- <a href="" class="h5 text-white">Blog Grid</a> -->
+            </div>
+        </div>
+    </div>
+</div>
