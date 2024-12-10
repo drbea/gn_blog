@@ -1,0 +1,45 @@
+{% extends "base_forum.html" %}
+{% load static %}
+{% block title %} Liste des discussions {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Colonne principale -->
+        <div class="col-md-8">
+            <h1 class="mb-4">Liste des Discussions</h1>
+            {% if sujets %}
+                <ul class="list-group">
+                    {% for sujet in sujets %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-0">{{ sujet.titre }}</h5>
+                            <small class="text-muted">Créé par {{ sujet.autheur.username }} le {{ sujet.date_creation|date:"d/m/Y H:i" }}</small>
+                        </div>
+                        <a href="{% url 'forum:detail_publication' sujet.id %}" class="btn btn-primary btn-sm">Voir les posts</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucun sujet pour le moment.</p>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <h4 class="mb-3">Catégories</h4>
+            {% if categories %}
+                <ul class="list-group">
+                    {% for category in categories %}
+                    <li class="list-group-item">
+                        <a href="{% url 'forum:filtrer_par_categorie' category.id %}">{{ category.titre }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucune catégorie disponible.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

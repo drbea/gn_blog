@@ -1,14 +1,13 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from . models import Categorie, Publication, Commentaire, Reaction, Sujet, Notification
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from message.models import Message
-from django.contrib.auth import get_user_model, logout
+from django.contrib.auth import get_user_model #, logout
 from django.db.models import Q
 
 User = get_user_model()
-
 # Create your views here.
 
 def list_messages(request):
@@ -18,13 +17,14 @@ def list_messages(request):
     ).distinct()
 
     conversations = []
-    for user in users_with_conversations:
-        last_message = Message.get_last_message_with_user(request.user, user)
-        if last_message:
-            conversations.append({
-                'user': user,
-                'last_message': last_message,
-            })
+    if users_with_conversations:
+        for user in users_with_conversations:
+            last_message = Message.get_last_message_with_user(request.user, user)
+            if last_message:
+                conversations.append({
+                    'user': user,
+                    'last_message': last_message,
+                })
     return conversations
 
 
@@ -41,11 +41,12 @@ def liste_notifications(request):
 def index(request):
     publication = Publication.objects.all()
     categorie = Categorie.objects.all()
+    conversations =  list_messages(request) if request.user.is_authenticated else None,
 
     context = {
         "publications": publication,
         "categories": categorie,
-        "conversations": list_messages(request),
+        "conversations": conversations,
     }
     return render(request, "home/index_blog.html", context)
 
@@ -53,18 +54,21 @@ def detail_publication(request, id_publication):
 
     publication = get_object_or_404(Publication, id = id_publication)
     commentaires = publication.commentaire_set.all()
+    conversations =  list_messages(request) if request.user.is_authenticated else None,
+
     context = {
         "publication": publication,
         "post": publication,
         "commentaires": commentaires,
         "comments": commentaires,
-        "conversations": list_messages(request),
-
+        "conversations": conversations,
     }
     return render(request, "home/post_detail.html", context)
 
 
 def create_publication(request):
+    if request.user.is_admin_or_moderator():
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de creer un article.")
     if request.method == 'POST':
         sujet_id = request.POST.get('sujet')
         category_titre = request.POST.get('category')
@@ -94,6 +98,9 @@ def create_publication(request):
     return render(request, 'home/post_create.html', context)
 
 def update_publication(request, id_publication):
+    if request.user.is_admin_or_moderator():
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de mettre ajour un article.")
+
     publication = get_object_or_404(Publication, id = id_publication)
 
     if request.method == 'POST':
@@ -121,6 +128,8 @@ def update_publication(request, id_publication):
 
 
 def delete_publication(request, id_publication):
+    if request.user.is_admin_or_moderator():
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer un article.")
     publication = get_object_or_404(Publication, id = id_publication)
     if request.method == "POST":
         publication.delete()
@@ -173,6 +182,8 @@ def detail_comment(request, id_commentaire):
 
 
 def delete_comment(request, id_commentaire):
+    if request.user.is_admin_or_moderator():
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer un commentaire.")
     commentaire = get_object_or_404(Commentaire, id = id_commentaire)
     if request.method == "POST":
         commentaire.delete()
@@ -262,6 +273,8 @@ def react_to_publication(request, id_publication, reaction_type):
 
 
 def dashboard(request):
+    if request.user.is_admin_or_moderator():
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de voir le tableau de bord.")
 
     context = {}
     return render(request, "home/dashboard.html", context)
@@ -276,7 +289,7 @@ def categories(request,id_category):
         "publications": posts,
         "categories": categories
     }
-    return render(request, "home/index.html", context)
+    return render(request, "home/index_blog.html", context)
 
 def index_blog (request):
     posts = Publication.objects.all()
@@ -297,4 +310,3 @@ def blog_Publication(request):
         "categories": categories
     }
     return render(request, "home/detailpublication.html",context)
-

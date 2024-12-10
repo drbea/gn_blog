@@ -13,7 +13,7 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.sender.username} to {self.receiver.username}"
-        
+
     @staticmethod
     def get_last_message_with_user(user1, user2):
         return Message.objects.filter(

@@ -27,6 +27,9 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
 
+    def is_admin_or_moderator(self):
+        return self.role in ['admin', 'moderator']
+
 
 class Followers(models.Model):
     followers = models.ForeignKey(User, related_name="Following", on_delete=models.CASCADE)
@@ -40,13 +43,13 @@ class Followers(models.Model):
         return f"{self.followers.username} follows {self.followed.username}"
 
 
-class Followers(models.Model):
-    followers = models.ForeignKey(User, related_name = "Following", on_delete = models.CASCADE)
-    followed = models.ForeignKey(User, related_name = "Followers", on_delete = models.CASCADE)
-    created = models.DateTimeField(auto_now_add = True)
+# class Followers(models.Model):
+#     followers = models.ForeignKey(User, related_name = "Following", on_delete = models.CASCADE)
+#     followed = models.ForeignKey(User, related_name = "Followers", on_delete = models.CASCADE)
+#     created = models.DateTimeField(auto_now_add = True)
 
-    class Meta:
-        unique_together = ("followers", "followed")
+#     class Meta:
+#         unique_together = ("followers", "followed")
 
-    def __str__(self):
-        return f"{self.followers.username} follows {self.followed.username}"
+#     def __str__(self):
+#         return f"{self.followers.username} follows {self.followed.username}"

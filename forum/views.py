@@ -1,9 +1,10 @@
 # forum/views.py
 
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import SujetForum, ForumPost, CategoryPost, Commentaires
+from .models import Reactions, SujetForum, ForumPost, CategoryPost, Commentaires
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # page dacceuil du forum
 def acceuil_forum(request):
@@ -18,17 +19,28 @@ def acceuil_forum(request):
     # return render(request, 'forum/forum_acceuil.html', context)
     return render(request, 'forum/blog.html', context)
 
-def sujet_forum(request, id_sujet):
-    topic = get_object_or_404(SujetForum, pk = id_sujet)
-    posts = ForumPost.objects.filter(sujet = topic)
+def liste_sujet_forum(request):
+    topics = SujetForum.objects.all()
+    context = {
+        'sujets': topics,
+        "categories": CategoryPost.objects.all(),
+
+        }
+    return render(request, 'forum/liste_sujet_forum.html', context)
+
+def filtrer_par_categorie(request, id_category):
+    category = CategoryPost.objects.get(id = id_category)
+    posts = ForumPost.objects.filter(category = category)
+    sujets = SujetForum.objects.all()
 
     context = {
-        'sujet': topic,
+        'sujets': sujets,
         "posts": posts,
+        "categories": CategoryPost.objects.all(),
         }
-    return render(request, 'forum/forum_acceuil.html', context)
-
-
+    # return render(request, 'forum/forum_acceuil.html', context)
+    return render(request, 'forum/blog.html', context)
+    return render(request, "forum/blog.html", context)
 
 def detail_publication(request, id_publication):
 
@@ -100,61 +112,42 @@ def creer_post(request):
     categories = CategoryPost.objects.all()
     return render(request, "forum/creer_post.html", {"sujets": sujets, "categories": categories})
 
+
 #
 #
-# def create_publication(request):
-#     if request.method == 'POST':
-#         sujet_id = request.POST.get('sujet')
-#         category_titre = request.POST.get('category')
-#         contenu = request.POST.get('contenu')
-#
-#         sujet = Sujet.objects.get(id=sujet_id)
-#
-#         # Vérifie si la catégorie existe déjà
-#         categorie, created = Categorie.objects.get_or_create(titre=category_titre)
-#
-#         publication = Publication(
-#             sujet=sujet,
-#             category=categorie,
-#             contenu=contenu,
-#             autheur=request.user
-#         )
-#         publication.save()
-#
-#         return redirect('home:index')  # Redirige vers la liste des publications
-#
-#     context = {
-#         "sujets": Sujet.objects.all(),
-#         "categories": Categorie.objects.all(),
-#         # "conversations": list_messages(request),
-#
-#     }
-#     return render(request, 'home/post_create.html', context)
-#
-#
-# def create_publication(request):
-#     if request.method == 'POST':
-#         sujet_id = request.POST.get('sujet')
-#         category_titre = request.POST.get('category')
-#         contenu = request.POST.get('contenu')
-#
-#         sujet = SujetForum.objects.get(id=sujet_id)
-#
-#         # Vérifie si la catégorie existe déjà
-#         categorie, created = CategoryPost.objects.get_or_create(titre=category_titre)
-#
-#         publication = ForumPost(
-#             sujet=sujet,
-#             category=categorie,
-#             contenu=contenu,
-#             autheur=request.user
-#         )
-#         publication.save()
-#
-#         return redirect('home:index')  # Redirige vers la liste des publications
-#
-#     context = {
-#         "sujets": SujetForum.objects.all(),
-#         "categories": CategoryPost.objects.all(),
-#     }
-#     return render(request, 'home/post_create.html', context)
+
+def react_to_publication(request, id_publication, reaction_type):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Vous devez être connecté pour réagir.')
+        return redirect('nom_de_votre_page')
+
+    publication = get_object_or_404(ForumPost, id=id_publication)
+
+    # Vérifier si l'utilisateur a déjà réagi à cette publication
+    existing_reaction = Reactions.objects.filter(
+        autheur=request.user,
+        publication=publication
+    ).first()
+
+    if existing_reaction:
+        if existing_reaction.type_reaction == reaction_type:
+            # Si la réaction est la même, on la supprime
+            existing_reaction.delete()
+            messages.info(request, 'Votre réaction a été supprimée.')
+        else:
+            # Sinon, mettre à jour avec le nouveau type de réaction
+            existing_reaction.type_reaction = reaction_type
+            existing_reaction.save()
+            messages.success(request, f'Votre réaction a été mise à jour en "{reaction_type}".')
+    else:
+        # Si aucune réaction n'existe, en créer une nouvelle
+        Reactions.objects.create(
+            autheur=request.user,
+            publication=publication,
+            type_reaction=reaction_type
+        )
+        messages.success(request, f'Vous avez réagi avec "{reaction_type}".')
+
+
+    return redirect('forum:detail_publication', id_publication=publication.id)
+

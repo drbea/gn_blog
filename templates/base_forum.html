@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Vendor CSS Files -->
   <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
@@ -51,14 +51,14 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="{% url 'forum:index' %}" class="active">Acceuil<br></a></li>
-          <li><a href="#about">Sujets/category</a></li>
+          <li><a href="{% url 'forum:liste_sujet_forum' %}">Sujets/category</a></li>
 
           <li><a href="{% url 'home:index' %}">Blog</a></li>
           {% if not request.user.is_authenticated %}
           <li class="dropdown"><a href="#"><span>S'authentication</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="#">Se connecter</a></li>
-              <li><a href="#">S'inscrire</a></li>
+              <li><a href="{% url 'accounts:login' %}">Se connecter</a></li>
+              <li><a href="{% url 'accounts:register' %}">S'inscrire</a></li>
             </ul>
           </li>
           {% else %}
@@ -130,7 +130,7 @@
           </div>
 
           <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Autheurs</h4>
+            <h4>Notre équipe</h4>
             <ul>
               <li><a href="#">Peve B.</a></li>
               <li><a href="#">Djenabou Kolon</a></li>
