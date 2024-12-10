@@ -67,7 +67,7 @@ def detail_publication(request, id_publication):
 
 
 def create_publication(request):
-    if request.user.is_admin_or_moderator():
+    if not  request.user.is_admin_or_moderator():
         return HttpResponseForbidden("Vous n'avez pas l'autorisation de creer un article.")
     if request.method == 'POST':
         sujet_id = request.POST.get('sujet')
