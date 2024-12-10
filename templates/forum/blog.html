@@ -10,7 +10,21 @@
     <div class="page-title">
       <div class="container d-lg-flex justify-content-between align-items-center">
         <h1 class="mb-2 mb-lg-0">Forum</h1>
+                          <!-- Search Widget -->
+            <div class="search-widget widget-item">
+
+              <h3 class="widget-title">Chercher un sujet</h3>
+              <form method="post" action="">
+                {% csrf_token %}
+                <input type="text" name="search-sujet">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+              </form>
+
+            </div>
+            <!--/Search Widget -->
         <nav class="breadcrumbs">
+
+
           <ol>
             <li><a href="{% url 'forum:index' %}">Forum</a></li>
             <li class="current">Acceuil</li>

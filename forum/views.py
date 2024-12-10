@@ -4,12 +4,24 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import Reactions, SujetForum, ForumPost, CategoryPost, Commentaires
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.contrib import messages
 
 # page dacceuil du forum
 def acceuil_forum(request):
-    sujets = SujetForum.objects.all()
-    posts = ForumPost.objects.all()
+    search_query = request.POST.get('search-sujet')
+    if search_query:
+        posts = ForumPost.objects.filter(
+            Q(contenu__icontains=search_query) | Q(sujet__titre__icontains= search_query)
+        )
+        sujets = SujetForum.objects.filter(
+            Q(titre__icontains = search_query)
+        )
+    else:
+        posts = ForumPost.objects.all()
+        sujets = SujetForum.objects.all()
+
+
     categories = CategoryPost.objects.all()
     context = {
         'sujets': sujets,
@@ -43,6 +55,22 @@ def filtrer_par_categorie(request, id_category):
     return render(request, "forum/blog.html", context)
 
 def detail_publication(request, id_publication):
+
+    query = request.POST.get("search-sujet")
+    if query:
+        publications = ForumPost.objects.filter(
+            Q(category__titre__icontains = query) |
+            Q(contenu__icontains = query)
+        )
+        sujets = SujetForum.objects.filter(titre__icontains = query)
+        # categories = CategoryPost.objects.all()
+        context = {
+            'sujets': sujets,
+            "posts": publications,
+            # "categories": categories,
+            }
+
+        return render(request, "forum/index", context)
 
     publication = get_object_or_404(ForumPost, id = id_publication)
     commentaires = publication.commentaires_set.all()
