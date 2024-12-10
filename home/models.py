@@ -28,6 +28,7 @@ class Publication(models.Model):
     autheur = models.ForeignKey(User, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='publilications', blank = True, null=True)
 
     class Meta:
         ordering = ['-date_update', '-date_creation']
