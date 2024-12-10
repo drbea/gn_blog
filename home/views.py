@@ -62,7 +62,6 @@ def detail_publication(request, id_publication):
         "commentaires": commentaires,
         "comments": commentaires,
         "conversations": conversations,
-
     }
     return render(request, "home/post_detail.html", context)
 
