@@ -4,12 +4,24 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import Reactions, SujetForum, ForumPost, CategoryPost, Commentaires
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.contrib import messages
 
 # page dacceuil du forum
 def acceuil_forum(request):
-    sujets = SujetForum.objects.all()
-    posts = ForumPost.objects.all()
+    search_query = request.POST.get('search-sujet')
+    if search_query:
+        posts = ForumPost.objects.filter(
+            Q(contenu__icontains=search_query) | Q(sujet__titre__icontains= search_query)
+        )
+        sujets = SujetForum.objects.filter(
+            Q(titre__icontains = search_query)
+        )
+    else:
+        posts = ForumPost.objects.all()
+        sujets = SujetForum.objects.all()
+
+
     categories = CategoryPost.objects.all()
     context = {
         'sujets': sujets,
@@ -43,6 +55,22 @@ def filtrer_par_categorie(request, id_category):
     return render(request, "forum/blog.html", context)
 
 def detail_publication(request, id_publication):
+
+    query = request.POST.get("search-sujet")
+    if query:
+        publications = ForumPost.objects.filter(
+            Q(category__titre__icontains = query) |
+            Q(contenu__icontains = query)
+        )
+        sujets = SujetForum.objects.filter(titre__icontains = query)
+        # categories = CategoryPost.objects.all()
+        context = {
+            'sujets': sujets,
+            "posts": publications,
+            # "categories": categories,
+            }
+
+        return render(request, "forum/index", context)
 
     publication = get_object_or_404(ForumPost, id = id_publication)
     commentaires = publication.commentaires_set.all()
@@ -151,3 +179,56 @@ def react_to_publication(request, id_publication, reaction_type):
 
     return redirect('forum:detail_publication', id_publication=publication.id)
 
+###########
+
+def update_publication(request, id_publication):
+    publication = get_object_or_404(Publication, id = id_publication)
+
+    if request.method == 'POST':
+        sujet_id = request.POST.get('sujet')
+        category_titre = request.POST.get('category')
+        contenu = request.POST.get('contenu')
+        sujet = Sujet.objects.get(id=sujet_id)
+
+        # Vérifie si la catégorie existe déjà
+        categorie, created = Categorie.objects.get_or_create(titre=category_titre)
+        publication.sujet=sujet
+        publication.category=categorie
+        publication.contenu=contenu
+        publication.save()
+        return redirect('home:detail_publication', id=publication.id)  # Redirige vers la page de détail de la publication
+
+    commentaires = publication.commentaire_set.all()
+    context = {
+        "publication": publication,
+        "conversations": list_messages(request),
+        "sujets": Sujet.objects.all(),
+        "categories": Categorie.objects.all()
+        }
+    return render(request, 'home/post_update.html', context)
+
+
+def delete_publication(request, id_publication):
+    publication = get_object_or_404(ForumPost, id = id_publication)
+    if request.method == "POST":
+        publication.delete()
+        return redirect("forum:index")
+
+    context = {
+        "obj": publication,
+
+        }
+    return render(request, 'forum/post_delete.html', context)
+
+
+def delete_comment(request, id_commentaire):
+    commentaire = get_object_or_404(Commentaires, id = id_commentaire)
+    if request.method == "POST":
+        commentaire.delete()
+        return redirect("home:index")
+
+    context = {
+        # "publication": publication,
+        "obj": commentaire
+        }
+    return render(request, 'forum/post_delete.html', context)

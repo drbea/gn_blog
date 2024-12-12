@@ -110,7 +110,7 @@ def activate(request, uidb64, token):
 
 def login_page(request):
     if request.user.is_authenticated:
-        return render(request, 'home/index.html')
+        return render(request, 'home/index_blog.html')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -119,7 +119,7 @@ def login_page(request):
         if user is not None:
             messages.success(request, 'Login Successful')
             login(request, user)
-            return render(request, 'home/index.html')
+            return render(request, 'home/index_blog.html')
         else:
             messages.error(request, 'Invalid credentials please try again')
     return render(request, 'accounts/login_page.html')

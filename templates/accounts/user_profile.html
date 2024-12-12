@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_blog.html' %}
 
 {% block content %}
 <div class="container mt-5">
@@ -21,49 +21,58 @@
                     <p><strong>Nom:</strong> {{ user.first_name }}</p>
                     <p><strong>Prénom:</strong> {{ user.last_name }}</p>
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Date de naissance:</strong> {{ user.date_of_birth }}</p>
+                    <!-- <p><strong>Date de naissance:</strong> {{ user.date_of_birth }}</p> -->
                     <p><strong>Adresse:</strong> {{ user.address }}</p>
-                    <p><strong>Téléphone:</strong> {{ user.phone_number }}</p>
+                    <!-- <p><strong>Téléphone:</strong> {{ user.phone_number }}</p> -->
                     <!-- Ajoutez d'autres champs de profil ici -->
                 </div>
             </div>
         </div>
     </div>
-</div>
-<hr>
+
+
+
+
+    <hr>
+    
 <div class="message">
-  {% if request.user != user %}
-    <a href="{% url 'message:message' user.id %}"> Send Message</a>
-  {% else %}
-    <a href="{% url 'message:conversation_list' %}">All messa </a>
-  {% endif %}
+    {% if request.user != user %}
+      <a href="{% url 'message:message' user.id %}"> Send Message</a>
+    {% else %}
+      <a href="{% url 'message:conversation_list' %}">All messa </a>
+    {% endif %}
+  </div>
+  
+  <div class="mx-5">
+      
+  <h3>Abonnement</h3>
+  <ul>
+      {% for follower in followers %}
+          <li>{{ follower.followers.username }}</li>
+  
+          {% if request.user != follower %}
+              <form method="post" action="{% url 'accounts:follow_user' follower.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary">
+                      {% if request.user in follower.followers.all %}
+                          Unfollow
+                      {% else %}
+                          Follow
+                      {% endif %}
+                  </button>
+              </form>
+          {% endif %}
+      {% endfor %}
+  </ul>
+
+  <h3>Abonnes</h3>
+  <ul>
+      {% for followed in followings %}
+          <li>{{ followed.followed.username }}</li>
+      {% endfor %}
+  </ul>
+
+  {% endblock %}
+
+  </div>
 </div>
-
-<h3>Abonnement</h3>
-<ul>
-    {% for follower in followers %}
-        <li>{{ follower.followers.username }}</li>
-
-        {% if request.user != follower %}
-            <form method="post" action="{% url 'accounts:follow_user' follower.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">
-                    {% if request.user in follower.followers.all %}
-                        Unfollow
-                    {% else %}
-                        Follow
-                    {% endif %}
-                </button>
-            </form>
-        {% endif %}
-    {% endfor %}
-</ul>
-
-<h3>Abonnes</h3>
-<ul>
-    {% for followed in followings %}
-        <li>{{ followed.followed.username }}</li>
-    {% endfor %}
-</ul>
-
-{% endblock %}
