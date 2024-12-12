@@ -1,17 +1,86 @@
 {% extends 'base_blog.html' %}
 
 {% block content %}
-<h2>Conversations</h2>
+<h2 class="page-title">Conversations</h2>
 
 <div class="conversation-list">
     {% for conversation in conversations %}
         <div class="conversation-item">
-            <a href="{% url 'message:message' conversation.user.id %}">
-                <strong>{{ conversation.user.username }}</strong>
-                <p>{{ conversation.last_message.contenu|truncatechars:50 }}</p>
-                <small>{{ conversation.last_message.timestamp|timesince }} ago</small>
+            <a href="{% url 'message:message' conversation.user.id %}" class="conversation-link">
+                <div class="conversation-header">
+                    <strong class="conversation-username">{{ conversation.user.username }}</strong>
+                    <small class="conversation-time">{{ conversation.last_message.timestamp|timesince }} ago</small>
+                </div>
+                <p class="conversation-last-message">{{ conversation.last_message.contenu|truncatechars:50 }}</p>
             </a>
         </div>
     {% endfor %}
 </div>
 {% endblock %}
+<style>
+    /* Style général de la page */
+.page-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Liste des conversations */
+.conversation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Item de conversation */
+.conversation-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+/* Effet au survol de la conversation */
+.conversation-item:hover {
+    background-color: #e3f2fd;
+}
+
+/* Lien vers la conversation */
+.conversation-link {
+    display: block;
+    color: #333;
+    text-decoration: none;
+}
+
+/* En-tête de chaque conversation */
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Nom de l'utilisateur */
+.conversation-username {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #00796b;
+}
+
+/* Temps écoulé */
+.conversation-time {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Message de la conversation */
+.conversation-last-message {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+</style>

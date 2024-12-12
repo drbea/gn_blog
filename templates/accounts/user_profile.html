@@ -34,17 +34,19 @@
 
 
     <hr>
-    
+
 <div class="message">
     {% if request.user != user %}
-      <a href="{% url 'message:message' user.id %}"> Send Message</a>
+      <a href="{% url 'message:message' user.id %}"> Envoyer Message</a>
     {% else %}
-      <a href="{% url 'message:conversation_list' %}">All messa </a>
+      <a href="{% url 'message:conversation_list' %}">Tous mes messages </a>
     {% endif %}
   </div>
-  
+  <hr class="custom-hr">
+
+
   <div class="mx-5">
-      
+
   <h3>Abonnement</h3>
   <ul>
       {% for follower in followers %}
@@ -76,3 +78,15 @@
 
   </div>
 </div>
+
+<style>
+    /* Style de la balise hr */
+.custom-hr {
+    border: 0;
+    border-top: 2px solid #00796b; /* Couleur de la ligne */
+    margin: 20px 0; /* Espacement vertical autour de la ligne */
+    width: 100%; /* Occupe toute la largeur disponible */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère sous la ligne */
+}
+
+</style>
