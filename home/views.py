@@ -170,7 +170,7 @@ def create_comment(request, id_publication):
     "conversations": list_messages(request),
 
     }
-    return render(request, "home/post_detail.html", context)
+    return render(request, "home/detailpublication.html", context)
 
 
 def detail_comment(request, id_commentaire):
