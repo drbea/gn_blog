@@ -51,7 +51,7 @@ class Commentaires(models.Model):
 
 class Reactions(models.Model):
     autheur = models.ForeignKey(User, on_delete=models.CASCADE)
-    publication = models.ForeignKey(ForumPost, on_delete=models.CASCADE, related_name='reactions')
+    publication = models.ForeignKey(ForumPost, on_delete=models.CASCADE) #, related_name='reactions')
     type_reaction = models.CharField(
         max_length=50,
         choices=[
@@ -66,4 +66,3 @@ class Reactions(models.Model):
 
     def __str__(self):
         return f"{self.autheur} a réagi sur {self.publication} avec {self.type_reaction}"
-

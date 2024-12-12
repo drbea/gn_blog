@@ -44,7 +44,13 @@
                   <ul>
                     <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html"> {{ post.auteur.username }} </a></li>
                     <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2020-01-01">{{ post.date_creation|date:"d M Y" }} </time></a></li>
-                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-details.html">{{ post.commentaires_set.count }} Comments</a></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-details.html">{{ post.commentaires_set.count }} Commentaires</a></li>
+                    {% if request.user == post.auteur %}
+
+
+                    <a href="{% url 'forum:delete_publication' post.id %}" class="mx-2"><i class="fa fa-trash" aria-hidden="true"></i>delete
+
+                    {% endif %}
                   </ul>
                 </div><!-- End meta top -->
 
@@ -96,14 +102,14 @@
 
                   <!-- <i class="bi bi-tags"></i> -->
                   <ul class="tags">
-                    <li><a href="#" class="w-2"><i class="fa-regular fa-thumbs-up"></i></a></li>
-                    <li><a href="#"><i class="fa-regular fa-thumbs-down"></i></a></li>
-     <form method="POST" action="{% url 'home:react_to_publication' post.id 'like' %}">
+                    <li><a href="{% url 'forum:react_to_publication' post.id 'like' %}" class="w-2"><i class="fa-regular fa-thumbs-up"></i></a></li>
+                    <li><a href="{% url 'forum:react_to_publication' post.id 'dislike' %}"><i class="fa-regular fa-thumbs-down"></i></a></li>
+     <!-- <form method="POST" action="{% url 'forum:react_to_publication' post.id 'like' %}">
                                 {% csrf_token %}
                                 <button type="submit">
                                     J'aime
                                 </button>
-                            </form>
+                            </form> -->
                   </ul>
                 </div><!-- End meta bottom -->
 
@@ -146,11 +152,21 @@
                   <div class="d-flex">
                     <div class="comment-img"><img src="assets/img/blog/comments-1.jpg" alt=""></div>
                     <div>
-                      <h5><a href="">{{ commentaire.autheur.username }} </a> <a href="#" class="reply"><i class="bi bi-reply-fill"></i> Reply</a></h5>
-                      <time datetime="2020-01-01">{{ commentaire.date_creation|date:"d M Y" }} </time>
+                      <h5>
+                        <a href="">{{ commentaire.autheur.username }}</a>
+                        <a href="#" class="reply">
+                          <i class="bi bi-reply-fill"></i> Reply
+                        </a>
+                        {% if request.user == commentaire.autheur %}
+                          <a href="{% url 'forum:delete_comment' commentaire.id %}" class="mx-2"><i class="fa fa-trash" aria-hidden="true"></i>delete
+                        {% endif %}
+                        </a>
+                      </h5>
+                      <time datetime="{{ commentaire.date_creation|date:"d M Y" }}">{{ commentaire.date_creation|date:"d M Y" }} </time>
                       <p>
                         {{ commentaire.contenu }}
                       </p>
+
                     </div>
                   </div>
                   {% endfor %}
@@ -296,7 +312,7 @@
                 <li><a href="#">Marketing</a></li>
               </ul>
 
-            </div><!--/Tags Widget --> 
+            </div><!--/Tags Widget -->
 
           </div>
 
@@ -306,4 +322,6 @@
     </div>
 
   </main>
+{% endblock %}
+{% block footer %}
 {% endblock %}

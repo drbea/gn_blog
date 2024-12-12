@@ -6,6 +6,7 @@ from django.contrib import messages
 from message.models import Message
 from django.contrib.auth import get_user_model #, logout
 from django.db.models import Q
+from django.http import JsonResponse
 
 User = get_user_model()
 # Create your views here.
@@ -205,12 +206,10 @@ def delete_comment(request, id_commentaire):
 
 def react_to_publication(request, id_publication, reaction_type):
     if not request.user.is_authenticated:
-        messages.error(request, 'Vous devez être connecté pour réagir.')
-        return redirect('nom_de_votre_page')
+        return JsonResponse({'error': 'Vous devez être connecté pour réagir.'}, status=403)
 
     publication = get_object_or_404(Publication, id=id_publication)
 
-    # Vérifier si l'utilisateur a déjà réagi à cette publication
     existing_reaction = Reaction.objects.filter(
         autheur=request.user,
         publication=publication
@@ -218,30 +217,72 @@ def react_to_publication(request, id_publication, reaction_type):
 
     if existing_reaction:
         if existing_reaction.type_reaction == reaction_type:
-            # Si la réaction est la même, on la supprime
             existing_reaction.delete()
-            messages.info(request, 'Votre réaction a été supprimée.')
+            action = 'deleted'
         else:
-            # Sinon, mettre à jour avec le nouveau type de réaction
             existing_reaction.type_reaction = reaction_type
             existing_reaction.save()
-            messages.success(request, f'Votre réaction a été mise à jour en "{reaction_type}".')
+            action = 'updated'
     else:
-        # Si aucune réaction n'existe, en créer une nouvelle
         Reaction.objects.create(
             autheur=request.user,
             publication=publication,
             type_reaction=reaction_type
         )
-        messages.success(request, f'Vous avez réagi avec "{reaction_type}".')
+        action = 'created'
 
     # Ajouter une notification
-    Notification.objects.create(
-        utilisateur=publication.autheur,  # L'utilisateur qui recevra la notification
-        message=f"{request.user.username} a réagi à votre publication avec {reaction_type}."
-    )
+    # Notification.objects.create(
+    #     utilisateur=publication.autheur,
+    #     message=f"{request.user.username} a réagi à votre publication avec {reaction_type}."
+    # )
 
-    return redirect('home:detail_publication', id_publication=publication.id)
+    return JsonResponse({
+        'message': f'Réaction {action} avec succès.',
+        'reaction_type': reaction_type,
+        'reaction_count': publication.reactions_set.count(),
+    })
+
+#
+# def react_to_publication(request, id_publication, reaction_type):
+#     if not request.user.is_authenticated:
+#         messages.error(request, 'Vous devez être connecté pour réagir.')
+#         return redirect('nom_de_votre_page')
+#
+#     publication = get_object_or_404(Publication, id=id_publication)
+#
+#     # Vérifier si l'utilisateur a déjà réagi à cette publication
+#     existing_reaction = Reaction.objects.filter(
+#         autheur=request.user,
+#         publication=publication
+#     ).first()
+#
+#     if existing_reaction:
+#         if existing_reaction.type_reaction == reaction_type:
+#             # Si la réaction est la même, on la supprime
+#             existing_reaction.delete()
+#             messages.info(request, 'Votre réaction a été supprimée.')
+#         else:
+#             # Sinon, mettre à jour avec le nouveau type de réaction
+#             existing_reaction.type_reaction = reaction_type
+#             existing_reaction.save()
+#             messages.success(request, f'Votre réaction a été mise à jour en "{reaction_type}".')
+#     else:
+#         # Si aucune réaction n'existe, en créer une nouvelle
+#         Reaction.objects.create(
+#             autheur=request.user,
+#             publication=publication,
+#             type_reaction=reaction_type
+#         )
+#         messages.success(request, f'Vous avez réagi avec "{reaction_type}".')
+#
+#     # Ajouter une notification
+#     Notification.objects.create(
+#         utilisateur=publication.autheur,  # L'utilisateur qui recevra la notification
+#         message=f"{request.user.username} a réagi à votre publication avec {reaction_type}."
+#     )
+#
+#     return redirect('home:detail_publication', id_publication=publication.id)
 
 
 def dashboard(request):

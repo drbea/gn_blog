@@ -179,3 +179,56 @@ def react_to_publication(request, id_publication, reaction_type):
 
     return redirect('forum:detail_publication', id_publication=publication.id)
 
+###########
+
+def update_publication(request, id_publication):
+    publication = get_object_or_404(Publication, id = id_publication)
+
+    if request.method == 'POST':
+        sujet_id = request.POST.get('sujet')
+        category_titre = request.POST.get('category')
+        contenu = request.POST.get('contenu')
+        sujet = Sujet.objects.get(id=sujet_id)
+
+        # Vérifie si la catégorie existe déjà
+        categorie, created = Categorie.objects.get_or_create(titre=category_titre)
+        publication.sujet=sujet
+        publication.category=categorie
+        publication.contenu=contenu
+        publication.save()
+        return redirect('home:detail_publication', id=publication.id)  # Redirige vers la page de détail de la publication
+
+    commentaires = publication.commentaire_set.all()
+    context = {
+        "publication": publication,
+        "conversations": list_messages(request),
+        "sujets": Sujet.objects.all(),
+        "categories": Categorie.objects.all()
+        }
+    return render(request, 'home/post_update.html', context)
+
+
+def delete_publication(request, id_publication):
+    publication = get_object_or_404(ForumPost, id = id_publication)
+    if request.method == "POST":
+        publication.delete()
+        return redirect("forum:index")
+
+    context = {
+        "obj": publication,
+
+        }
+    return render(request, 'forum/post_delete.html', context)
+
+
+def delete_comment(request, id_commentaire):
+    commentaire = get_object_or_404(Commentaires, id = id_commentaire)
+    if request.method == "POST":
+        commentaire.delete()
+        return redirect("home:index")
+
+    context = {
+        # "publication": publication,
+        "obj": commentaire
+        }
+    return render(request, 'forum/post_delete.html', context)
