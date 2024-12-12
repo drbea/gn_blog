@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Notifications</title>
-</head>
-<body>
+{% extends 'base_blog.html' %}
+{% load static %}
+{% block title %} Notifications {% endblock %}
+
+{% block content %}
+
     <h1>Vos Notifications</h1>
 
     {% if notifications %}
@@ -21,6 +20,5 @@
         </ul>
     {% else %}
         <p>Vous n'avez aucune notification.</p>
-    {% endif %}
-</body>
-</html>
+    {% endif %}\
+{% endblock %}

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Startup - Startup Website Template</title>
+    <title>forum-{% block title %} {% endblock %}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -34,17 +34,24 @@
 
 <body>
     <!-- Spinner Start -->
+    {% block spinner %}
       {% include 'partials/blog_spinner.html' %}
+    {% endblock %}
     <!-- Spinner End -->
 
 
     <!-- Topbar Start -->
+    {% block taopbar %}
       {% include 'partials/blog_topbar.html' %}
+    {% endblock  %}
+
     <!-- Topbar End -->
 
 
     <!-- Navbar Start -->
-    {% include 'partials/blog_navbar.html' %}
+     {% block navbar %}
+      {% include 'partials/blog_navbar.html' %}
+     {% endblock %}
     <!-- Navbar End -->
 
 
@@ -66,7 +73,9 @@
 
 
     <!-- Footer Start -->
-      {% include 'partials/blog_footer.html' %}
+      {% block footer %}
+        {% include 'partials/blog_footer.html' %}
+      {% endblock  %}
     <!-- Footer End -->
 
 
