@@ -32,31 +32,22 @@
                                     <p>{{ post.contenu|truncatechars:50 }}</p>
                                    <div>
                                     <div class="d-flex align-items-center">
-                                        <a href="{% url 'home:react_to_publication' post.id 'like' %}">
-                                            <i class="fas fa-thumbs-up fa-2x"></i>
-                                        </a>
-                                        <a href="{% url 'home:react_to_publication' post.id 'dislike' %}" class="d-flex align-items-center mx-3">
-                                            <i class="fas fa-thumbs-down dislike-icon mr-1 fa-2x"></i>
-                                        </a>
-
                                         <a class="text-uppercase btn btn-outline-primary custom-btn" href="{% url 'home:blog-publication' post.id %}">
                                             Voir plus <i class="bi bi-arrow-right"></i> <i class="bi bi-eye ml-2"></i>
                                         </a>
                                     </div>
                                    </div>
                                 </div>
-                                <a class=" delete-link btn btn-outline-primary custom-btn" href="{% url 'home:delete_publication' post.id %}">
-                                    <i class="fas fa-trash-alt"></i> Supprimer
-                                </a>
+                               
                                 
-                                <style>
+                                <!-- <style>
                                 
                                     .delete-link:hover {
                                         background-color: rgb(243, 14, 14); /* Fond blanc au survol */
                                         color: #f5f6f7; /* Texte bleu au survol */
                                     }
                                 </style>
-                                
+                                 -->
                         </div>
                     </div>
                   {% endfor %}
