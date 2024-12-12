@@ -52,7 +52,7 @@
         <div class="container py-5">
             <h3 class="mb-4 fw-bold text-primary">Ajouter un Commentaire</h3>
             
-            <form method="post" class="form-class d-flex align-items-center mb-5" action="{% url 'home:create_comment' publication.id %}">
+            <form method="post" class="form-class d-flex align-items-center mb-5" action="{% url 'home:blog-publication' publication.id %}">
                 {% csrf_token %}
                 <input 
                     type="text" 
