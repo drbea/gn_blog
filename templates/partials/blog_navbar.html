@@ -67,7 +67,7 @@
                       </div>
                     </div>
                 </div>
-                <a href="{% url 'home:create_publication' %}" class="nav-item nav-link {% if request.user.role != 'Admin' %} disabled {% endif %}  %}">Créer une publication</a>
+                <a href="{% url 'home:create_publication' %}" class="nav-item nav-link {% if request.user.role == 'User' %} disabled {% endif %}  %}">Créer une publication</a>
 
 
 
