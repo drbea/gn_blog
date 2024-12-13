@@ -1,21 +1,24 @@
 {% extends 'base_blog.html' %}
 
 {% block content %}
-<h2 class="page-title">Conversations</h2>
-
-<div class="conversation-list">
-    {% for conversation in conversations %}
-        <div class="conversation-item">
-            <a href="{% url 'message:message' conversation.user.id %}" class="conversation-link">
-                <div class="conversation-header">
-                    <strong class="conversation-username">{{ conversation.user.username }}</strong>
-                    <small class="conversation-time">{{ conversation.last_message.timestamp|timesince }} ago</small>
-                </div>
-                <p class="conversation-last-message">{{ conversation.last_message.contenu|truncatechars:50 }}</p>
-            </a>
-        </div>
-    {% endfor %}
-</div>
+  <div class="mx-5">
+    <h2 class="page-title text-center fw-bold">Conversations</h2>
+    <br><br><br>
+    <div class="conversation-list">
+        {% for conversation in conversations %}
+            <div class="conversation-item mx-5">
+                <a href="{% url 'message:message' conversation.user.id %}" class="conversation-link">
+                    <div class="conversation-header">
+                        <strong class="conversation-username">{{ conversation.user.username }}</strong>
+                        <small class="conversation-time">{{ conversation.last_message.timestamp|timesince }} ago</small>
+                    </div>
+                    <p class="conversation-last-message">{{ conversation.last_message.contenu|truncatechars:50 }}</p>
+                </a>
+            </div>
+            <hr class="fs-4">
+        {% endfor %}
+    </div>
+  </div>
 {% endblock %}
 <style>
     /* Style général de la page */

@@ -147,7 +147,8 @@ def creer_post(request):
 def react_to_publication(request, id_publication, reaction_type):
     if not request.user.is_authenticated:
         messages.error(request, 'Vous devez être connecté pour réagir.')
-        return redirect('nom_de_votre_page')
+        # return  redirect('forum:detail_publication', id_publication=publication.id)
+        return  HttpResponse("<h3 class='text-center'>Vous devez etre connecter pour reagir</h3>")
 
     publication = get_object_or_404(ForumPost, id=id_publication)
 

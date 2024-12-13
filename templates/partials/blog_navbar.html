@@ -3,7 +3,11 @@
 <div class="container-fluid position-relative p-0">
     <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
         <a href="{% url 'home:index' %}" class="navbar-brand p-0">
-            <h1 class="m-0"><i class="fa fa-user-tie me-2"></i>GN-BLOG</h1>
+            <h1 class="m-0">
+              <i class="fa fa-user-tie me-2"></i>
+              <!-- <img src="{% static 'img/logo_gnblog.png' %}" class="img rounded-lg me-2 img-fluid" style="width: 3em" alt=""> -->
+              GN-BLOG
+            </h1>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="fa fa-bars"></span>
@@ -11,7 +15,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
                 <a href="{% url 'home:index' %}" class="nav-item nav-link">Home</a>
-                <a href="{% url 'forum:index' %}" class="nav-item nav-link">forum</a>
+                <a href="{% url 'forum:index' %}" class="nav-item nav-link">Forum</a>
+                {% if request.user.is_authenticated and request.user.role == 'Admin' %}
+                <a href="{% url 'home:dashboard' %}" class="nav-item nav-link">Dashboard</a>
+                {% endif %}
                 <!-- <a href="service.html" class="nav-item nav-link">Services</a> -->
                 <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Blog</a>
@@ -23,7 +30,7 @@
 
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Messages</a>
+                    <a href="#" class="nav-link dropdown-toggle {% if not user.is_authenticated %}disabled {% endif %}" data-bs-toggle="dropdown">Messages</a>
                     <div class="dropdown-menu m-0">
                       <div class="conversation-list">
                         {% if request.user.is_authenticated %}
@@ -46,10 +53,11 @@
                     </div>
                 </div>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Notificatins</a>
+                    <a href="#" class="nav-link dropdown-toggle {% if not user.is_authenticated %}disabled {% endif %}" data-bs-toggle="dropdown">Notificatins</a>
                     <div class="dropdown-menu m-0">
+                      {% if user.is_authenticated %}
                       <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                          <a href="#" class="dropdown-item">
+                          <!-- <a href="#" class="dropdown-item">
                               <h6 class="fw-normal mb-0">Profile updated</h6>
                               <small>15 minutes ago</small>
                           </a>
@@ -63,12 +71,14 @@
                               <h6 class="fw-normal mb-0">Password changed</h6>
                               <small>15 minutes ago</small>
                           </a>
-                          <hr class="dropdown-divider">
-                          <a href="#" class="dropdown-item text-center">See all notifications</a>
+                          <hr class="dropdown-divider"> -->
+                          <a href="{% url 'home:liste_notifications' %}" class="dropdown-item text-center{% if not user.is_authenticated %}disabled {% endif %}">See all notifications</a>
                       </div>
+                      {% endif %}
                     </div>
                 </div>
-                <a href="{% url 'home:create_publication' %}" class="nav-item nav-link {% if request.user.role == 'User' %} disabled {% endif %}  %}">Créer une publication</a>
+                <a href="{% url 'home:create_publication' %}" class="nav-item nav-link {% if request.user.role == 'User' or not user.is_authenticated %} disabled {% endif %}  %}">Créer une publication</a>
+                <a href="" class="nav-item nav-link">Contactez-nous</a>
 
 
 
