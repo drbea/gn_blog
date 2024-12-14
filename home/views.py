@@ -327,3 +327,11 @@ def blog_Publication(request,id_publication):
         "conversations": conversations,
     }
     return render(request, "home/detailpublication.html",context)
+
+
+def contact (request):
+
+    context = {
+        
+    }
+    return render(request, "home/contact.html",context)

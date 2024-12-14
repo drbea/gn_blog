@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <a href="{% url 'home:create_publication' %}" class="nav-item nav-link {% if request.user.role == 'User' or not user.is_authenticated %} disabled {% endif %}  %}">Créer une publication</a>
-                <a href="" class="nav-item nav-link">Contactez-nous</a>
+                <a href="{% url 'home:contact' %}" class="nav-item nav-link">Contactez-nous</a>
 
 
 
