@@ -8,7 +8,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-    
+
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -49,11 +49,11 @@
 
 
         <!-- Sidebar Start -->
-        {% if user.is_authenticated %}
+        <!-- {% if user.is_authenticated %} -->
           {% block sidebar %}
             {% include "partials/sidebar.html" %}
           {% endblock %}
-        {% endif %}
+        <!-- {% endif %} -->
         <!-- Sidebar End -->
 
 
@@ -62,7 +62,6 @@
             <!-- Navbar Start -->
             {% block navbar %}
             {% include "partials/navbar.html" %}
-
             {% endblock %}
             <!-- Navbar End -->
 

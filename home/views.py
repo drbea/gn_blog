@@ -286,7 +286,7 @@ def react_to_publication(request, id_publication, reaction_type):
 
 
 def dashboard(request):
-    if request.user.is_admin_or_moderator():
+    if not request.user.is_admin_or_moderator():
         return HttpResponseForbidden("Vous n'avez pas l'autorisation de voir le tableau de bord.")
 
     context = {}

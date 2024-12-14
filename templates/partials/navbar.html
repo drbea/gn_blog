@@ -56,7 +56,7 @@
                 <i class="fa fa-bell me-lg-2"></i>
                 <span class="d-none d-lg-inline-flex">Notificatin</span>
             </a>
-            <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+            <!-- <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                 <a href="#" class="dropdown-item">
                     <h6 class="fw-normal mb-0">Profile updated</h6>
                     <small>15 minutes ago</small>
@@ -73,12 +73,12 @@
                 </a>
                 <hr class="dropdown-divider">
                 <a href="#" class="dropdown-item text-center">See all notifications</a>
-            </div>
+            </div> -->
         </div>
         {% if user.is_authenticated %}
           <div class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                {% if user.user_avatar %}
+                {% if request.user.user_avatar %}
                     <img class="rounded-circle me-lg-2" src="{{ request.user.user_avatar }}" alt="" style="width: 40px; height: 40px;">
                 {% else %}
                     <img class="rounded-circle me-lg-2" src="{% static 'img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
