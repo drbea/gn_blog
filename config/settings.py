@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'accounts',
     'home',
     'forum',
+    'dashboard',
     'message.apps.MessageConfig',
 ]
 
