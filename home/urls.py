@@ -5,7 +5,7 @@ from . import views
 app_name = "home"
 urlpatterns = [
     path("", views.index, name = "index"),
-    path("dashboard/", views.dashboard, name = "dashboard"),
+    # path("dashboard/", views.dashboard, name = "dashboard"),
     path("categories/<int:id_category>/", views.categories, name = "type_categorie"),
     path("notifications/", views.liste_notifications, name = "liste_notifications"),
     path('post/<int:id_publication>/react/<str:reaction_type>/', views.react_to_publication, name='react_to_publication'),

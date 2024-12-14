@@ -12,6 +12,7 @@ urlpatterns = [
     path("", include("home.urls")),
     path("message/", include("message.urls")),
     path("forum/", include("forum.urls")),
+    path("dashboard/", include("dashboard.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
