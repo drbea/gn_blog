@@ -64,7 +64,7 @@ def detail_publication(request, id_publication):
         "comments": commentaires,
         "conversations": conversations,
     }
-    return render(request, "home/post_detail.html", context)
+    return render(request, "home/detailpublication.html", context)
 
 
 def create_publication(request):
@@ -157,7 +157,6 @@ def create_comment(request, id_publication):
         )
         new_commentaire.save()
 
-
         # Ajouter une notification
         Notification.objects.create(
             utilisateur=publication.autheur,  # L'utilisateur qui recevra la notification
@@ -180,7 +179,7 @@ def detail_comment(request, id_commentaire):
         "comments": commentaire,
         "conversations": list_messages(request),
     }
-    return render(request, "home/post_detail.html", context)
+    return render(request, "home/detailpublication.html", context)
 
 
 
