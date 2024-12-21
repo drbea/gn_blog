@@ -1,4 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
+
+from home.views import list_messages
 from .models import Reactions, SujetForum, ForumPost, CategoryPost, Commentaires
 
 from django.contrib.auth.decorators import login_required
@@ -102,6 +105,8 @@ def create_comment(request, id_publication):
 
 # @login_required
 def creer_post(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("Vous devez etre inscrit pour creer une discusion !!!")
     if request.method == "POST":
         # Récupérer ou créer un sujet
         sujet_titre = request.POST.get("sujet_titre", "").strip()
@@ -181,16 +186,16 @@ def react_to_publication(request, id_publication, reaction_type):
 ###########
 
 def update_publication(request, id_publication):
-    publication = get_object_or_404(Publication, id = id_publication)
+    publication = get_object_or_404(ForumPost, id = id_publication)
 
     if request.method == 'POST':
         sujet_id = request.POST.get('sujet')
         category_titre = request.POST.get('category')
         contenu = request.POST.get('contenu')
-        sujet = Sujet.objects.get(id=sujet_id)
+        sujet = SujetForum.objects.get(id=sujet_id)
 
         # Vérifie si la catégorie existe déjà
-        categorie, created = Categorie.objects.get_or_create(titre=category_titre)
+        categorie, created = CategoryPost.objects.get_or_create(titre=category_titre)
         publication.sujet=sujet
         publication.category=categorie
         publication.contenu=contenu
@@ -201,8 +206,9 @@ def update_publication(request, id_publication):
     context = {
         "publication": publication,
         "conversations": list_messages(request),
-        "sujets": Sujet.objects.all(),
-        "categories": Categorie.objects.all()
+        "sujets": SujetForum.objects.all(),
+        "categories": CategoryPost.objects.all(),
+        "commentaires": commentaires,
         }
     return render(request, 'home/post_update.html', context)
 

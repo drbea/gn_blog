@@ -76,7 +76,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted {% if not user.is_authenticated %} disabled {% endif %}" href="{% url 'forum:create_post' %}">Creer une discussion</a>
+      <a class="{% if not request.user.is_authenticated %} disabled {% endif %} btn-getstarted" href="{% url 'forum:create_post' %}">Creer une discussion</a>
 
     </div>
   </header>

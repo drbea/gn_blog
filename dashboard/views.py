@@ -4,11 +4,8 @@ from django.contrib.auth import get_user_model
 from datetime import timedelta
 from django.utils import timezone
 
-
-\
-
-
-
+from forum.models import ForumPost
+from home.models import Publication
 User = get_user_model()
 
 
@@ -24,6 +21,8 @@ def dashboard(request):
     context = {
         "users": User.objects.all(),
         "users_last_month": users_last_month,
+        "forumpost": ForumPost.objects.all(),
+        "publications": Publication.objects.all(),
     }
 
     return render(request, "dashboard/dashboard.html", context)

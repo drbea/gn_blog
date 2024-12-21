@@ -3,13 +3,8 @@
 
 {% block title %}Detail post{% endblock  %}
 
-
     <!-- Blog Start -->
     {% block content %}
-
-
-
-
     <!-- About Start -->
     <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -17,14 +12,13 @@
                 <!-- Contenu principal -->
                 <div class="col-lg-7">
                     <div class="section-title position-relative pb-3 mb-5">
-                        
+
                         <h1 class="mb-0">{{ post.sujet }}</h1>
                         <h5 class="fw-bold text-primary text-uppercase d-flex justify-content-between">
                             Categories: {{ post.category.titre }}
                             {% for category in post.category.all %}
                             {{ category.titre }}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
-                            
                         </h5>
                     </div>
                     <p class="mb-4">{{ post.contenu }}</p>
@@ -34,7 +28,7 @@
                             </a>
                             {% endif %}
                 </div>
-    
+
                 <!-- Image -->
                 <div class="col-lg-5" style="min-height: 500px;">
                     <div class="position-relative h-100">
@@ -47,31 +41,26 @@
                 </div>
             </div>
         </div>
-    
+
         <!-- Section des commentaires -->
         <div class="container py-5">
             <h3 class="mb-4 fw-bold text-primary">Ajouter un Commentaire</h3>
-            
-            <form method="post" class="form-class d-flex align-items-center mb-5" action="{% url 'home:blog-publication' publication.id %}">
+
+            <form method="post" class="form-class d-flex align-items-center mb-5" action="{% url 'home:create_comment' publication.id %}">
+                <!-- <form method="post" class="form-class d-flex align-items-center mb-5" action=""> -->
                 {% csrf_token %}
-                <input 
-                    type="text" 
-                    name="commentaire" 
-                    class="form-control me-3" 
-                    placeholder="Write your comment..." 
-                    style="flex: 1; border: 1px solid #ccc; border-radius: 5px; padding: 10px;"
-                >
+                <input type="text" name="commentaire" class="form-control me-3" placeholder="Write your comment..." style="flex: 1; border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
                 <button type="submit" class="btn btn-primary px-4 py-2">Commenter</button>
-                
+
             </form>
-    
-            <h2 class="h2 fw-bold text-primary mb-4">Commentaire</h2>
+
+            <h2 class="h2 fw-bold text-primary mb-4">Commentaire {{ post.commentaire_set.count }}</h2>
             <ul class="list-group">
                 {% for comment in comments %}
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div>
                         <p class="mb-1">{{ comment.contenu }}</p>
-                        <small class="text-muted">By 
+                        <small class="text-muted">By
                             <span class="fw-bold">@{{ comment.autheur.username }}</span>
                             - {{ comment.date_creation|timesince }} ago
                         </small>
@@ -81,52 +70,11 @@
             </ul>
         </div>
     </div>
-    
-    
+
     <!-- About End -->
-    
 
 
-  
+
+
 {% endblock %}
-
-
-
-<!-- <h1><a href="{% url 'home:detail_publication' post.id %}">{{ post.sujet }}</a></h1>
-<div class="post bg-secondary text-white">
-  <p class="fs-2 ">{{ post.contenu }}</p>
-  <p>by: <span class="fw-bold">@{{ post.autheur }} </span>
-      {{ post.date_creation | timesince }} ago
-  </p>
-  <p>Categories: {{post.category.titre}}
-      {% for category in post.category.all %}
-      {{ category.titre }}{% if not forloop.last %}, {% endif %}
-      {% endfor %}
-  </p>
-
-</div>
-
-
-<h3 class="h3">Add a comment</h3>
-<form method="post" class="form-class" action="{% url 'home:create_comment' publication.id %}">
-    {% csrf_token %}
-    <input type="text" name="commentaire" value="" placeholder="Ecrire votre commentaire">
-    <button type="submit">commenter</button>
-</form>
-<br>
-<h2 class="h2">Commentaires</h2>
-<ul>
-    {% for comment in comments %}
-
-      <li>{{ comment.contenu }} -
-        <span class="fw-bold">@{{ comment.autheur.username }} </span>
-        <span class="">({{ comment.date_creation|timesince }} ago)</span></li>
-    {% endfor %}
-</ul>
-
-
-<a href="" class="btn btn-info">Edit</a>
-<a href="" class="btn btn-warning">Delete</a>
-<a href="" class="btn btn-primary">Like ({{ post.likes.count }})</a> -->
-
 
