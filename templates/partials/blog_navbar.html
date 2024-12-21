@@ -14,7 +14,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="{% url 'home:index' %}" class="nav-item nav-link">Home</a>
+                <a href="{% url 'home:index' %}" class="nav-item nav-link">Acceuil</a>
                 <a href="{% url 'forum:index' %}" class="nav-item nav-link">Forum</a>
                 {% if request.user.is_authenticated and request.user.is_admin_or_moderator %}
                 <a href="{% url 'dashboard:index' %}" class="nav-item nav-link">Dashboard</a>

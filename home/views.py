@@ -156,6 +156,7 @@ def create_comment(request, id_publication):
             contenu = contenu_commentaire
         )
         new_commentaire.save()
+        print("commentaire ajouté", new_commentaire)
 
 
         # Ajouter une notification

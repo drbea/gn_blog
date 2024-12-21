@@ -1,20 +1,51 @@
 {% extends "base_blog.html" %}
 {% load static %}
-{% block title %}Creer publication {% endblock %}
+{% block title %}Créer une publication{% endblock %}
 
 {% block css %}
- <!-- <link href="{% static 'css/index.css' %}" rel="stylesheet"> -->
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+     .form-group label {
+        font-weight: bold;
+        color: #555;
+    } */
+    .btn-primary {
+        background-color: #0879f0;
+        border-color: #007bff;
+        width: 150%;
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0575ed;
+        width: 100%;
+        color: white;
+        
+    } 
+</style>
 {% endblock %}
 
-
 {% block content %}
-
-    <div class="container mt-5">
-        <h2 class="mb-4">Créer une Publication</h2>
-        <form method="post" action="">
+<div class="container mt-5">
+    <div class="form-container">
+        <h1 class="mb-4">Créer une Publication</h1>
+        <form method="post" action="" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <label for="sujet">Sujet</label>
+                <label for="sujet"><h4>Sujet</h4></label>
                 <select class="form-control" id="sujet" name="sujet" required>
                     <option value="" selected disabled>Choisissez un sujet</option>
                     {% for sujet in sujets %}
@@ -23,7 +54,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="category">Catégorie</label>
+                <label for="category"><h4>Catégorie</h4></label>
                 <input type="text" class="form-control" id="category" name="category" list="category-list" required>
                 <datalist id="category-list">
                     {% for categorie in categories %}
@@ -32,14 +63,15 @@
                 </datalist>
             </div>
             <div class="form-group">
-                <label for="contenu">Contenu</label>
+                <label for="contenu"><h4>Contenu</h4></label>
                 <textarea class="form-control" id="contenu" name="contenu" rows="5" required></textarea>
             </div>
             <div class="form-group">
-                <label for="contenu">Image</label>
-                <input type="file" name="image">
+                <label for="image"><h4>Image</h4></label>
+                <input type="file" class="form-control-file" id="image" name="image">
             </div>
-            <button type="submit" class="btn btn-primary">Publier</button>
+            <button type="submit" class="btn btn-primary " style="width: 100%; color: white; "><h5>Publier</h5></button>
         </form>
     </div>
+</div>
 {% endblock %}
