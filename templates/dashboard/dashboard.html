@@ -96,7 +96,7 @@
         <div class="col-md-6 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-            <p class="card-title">Order Details</p>
+            <p class="card-title">Forum Details</p>
             <p class="font-weight-500">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
             <div class="d-flex flex-wrap mb-5">
                 <div class="me-5 mt-3">
@@ -116,7 +116,10 @@
                 <h3 class="text-primary fs-30 font-weight-medium">34040</h3>
                 </div>
             </div>
-            <canvas id="order-chart"></canvas>
+            <!-- <canvas id="order-chart"></canvas> -->
+            {{ bokeh_pie_div|safe }}
+            {{ bokeh_pie_script|safe }}
+
             </div>
         </div>
         </div>
@@ -124,12 +127,16 @@
         <div class="card">
             <div class="card-body">
             <div class="d-flex justify-content-between">
-                <p class="card-title">Sales Report</p>
+                <p class="card-title">Graph detail blog</p>
                 <a href="#" class="text-info">View all</a>
             </div>
             <p class="font-weight-500">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
             <div id="sales-chart-legend" class="chartjs-legend mt-4 mb-2"></div>
-            <canvas id="sales-chart"></canvas>
+            <!-- <canvas id=""> -->
+              {{ bokeh_div|safe }}
+              {{ bokeh_script|safe }}
+
+            <!-- </canvas> -->
             </div>
         </div>
         </div>
@@ -696,4 +703,3 @@
     </div>
     <!-- content-wrapper ends -->
 {% endblock content %}
-        
